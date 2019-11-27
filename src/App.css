@@ -34,6 +34,24 @@
     min-height:400px;
 }
 
+@media(min-width: 900px){
+  .centreItem {
+    margin-bottom: 50px;
+    margin-left: 250px; 
+  }
+
+  .containerBorder {
+    border-left: 1px solid rgba(0,0,0,.1);
+    border-right: 1px solid #0000001a;
+    padding-top: 50px;
+  }
+}
+.spinner {
+  margin-left: 50%;
+  margin-top: 100px;
+}
+
+
 .footer{
     background-color: #D1C4E9;
     margin:0px auto;
