@@ -4,8 +4,9 @@ import Feed from './homeComponent';
 import { connect } from 'react-redux';
 
 import Header from './headerComponent';
+import RenderPostForm from './postComponent';
 
-import { loginUser, logoutUser, fetchFeed } from '../redux/ActionCreators';
+import { loginUser, logoutUser, fetchFeed, postGif } from '../redux/ActionCreators';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
 
@@ -13,7 +14,8 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 const mapStateToProps = state => {
     return {
       auth: state.auth,
-      feed: state.feeds
+      feed: state.feeds,
+      gif: state.gif
     }
 }
 
@@ -21,6 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
   loginUser: (creds) => dispatch(loginUser(creds)),
   logoutUser: () => dispatch(logoutUser()),
   fetchFeed: () => {dispatch(fetchFeed())},
+  postGif: (file) => dispatch(postGif(file))
  });
 
 class Main extends Component {
@@ -33,7 +36,7 @@ class Main extends Component {
 
     const HomePage = () => {
       return(
-        <Feed feeds={this.props.feed}/>
+        <Feed feeds={this.props.feed} />
       );
     }
 
@@ -43,6 +46,7 @@ class Main extends Component {
           loginUser={this.props.loginUser} 
           logoutUser={this.props.logoutUser}
           />
+        <RenderPostForm />
         <Switch>
               <Route path='/home' component={HomePage} />
               <Redirect to="/home" />

@@ -13,7 +13,8 @@ export const requestLogin = (creds) => {
 export const receiveLogin = (response) => {
     return {
         type: ActionTypes.LOGIN_SUCCESS,
-        token: response.token
+        token: response.token,
+        user: response.firstname
     }
 }
   
@@ -55,7 +56,7 @@ export const loginUser = (creds) => (dispatch) => {
         if (response) {
             // If login was successful, set the token in local storage
             const storage = localStorage.setItem('token', response.token);
-            localStorage.setItem('creds', JSON.stringify(creds));
+            localStorage.setItem('user', response.firstname);
             console.log('storage', storage)
             // Dispatch the success action
             dispatch(receiveLogin(response));
@@ -133,4 +134,63 @@ export const fetchFeed = () => (dispatch) => {
         .then(response => response.json())
         .then(response => dispatch(feedLoaded(response.data)))
         .catch(error => dispatch(feedFailed(error.message)));
+}
+
+
+//Post Gif
+
+export const postGifloading = () => {
+    return {
+        type: ActionTypes.POST_GIF_LOADING
+    }
+}
+
+export const postGifSuccess = (data) => {
+    return {
+        type: ActionTypes.POST_GIF_SUCCESS,
+        payload: data
+    }
+}
+
+export const postGifFailed = (errmess) => {
+    return {
+        type: ActionTypes.POST_GIF_SUCCESS,
+        payload: errmess
+    }
+}
+        
+
+export const postGif = (file) => (dispatch) => {
+    dispatch(postGifloading(true))
+
+    const form = new FormData(this.refs.myForm);
+    form.append('image', file);
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+
+    return fetch(baseUrl + 'api/v1/gifs', {
+        method: 'POST',
+        headers: { 
+            'Authorization': bearer
+        },
+        body: form,
+        credentials: '*'
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('response', response)
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            console.log('error', error)
+            error.response = response;
+            throw error;
+        }
+        },
+        error => {
+            throw error;
+        })
+        .then(response => response.json())
+        .then(response => dispatch(postGifSuccess(response)))
+        .catch(error => dispatch(postGifFailed(error.message)));
 }

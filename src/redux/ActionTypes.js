@@ -7,3 +7,6 @@ export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
 export const FEED_LOADING = 'FEED_LOADING';
 export const FEED_FAILED = 'FEED_FAILED';
 export const FEED_LOADED = 'FEED_LOADED';
+export const POST_GIF_SUCCESS = 'POST_GIF_SUCCESS';
+export const POST_GIF_LOADING = 'POST_GIF_LOADING';
+export const POST_GIF_FAILED = 'POST_GIF_FAILED';

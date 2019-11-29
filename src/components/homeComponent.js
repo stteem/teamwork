@@ -13,7 +13,7 @@ function validURL(str) {
   return !!pattern.test(str);
 }
 
-function RenderFeedItem({ feed, onClick }) {
+function RenderFeedItem({ feed, gif, onClick }) {
  if (validURL(feed.item)) {
     return(
         <Card>
@@ -53,6 +53,8 @@ const Feed = (props) => {
             </div>
         );
     });
+
+    
 
     if (props.feeds.isLoading) {
         return(

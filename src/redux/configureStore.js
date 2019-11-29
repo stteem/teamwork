@@ -1,6 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Auth } from './auth';
 import { Feed } from './feed';
+import { Gif } from './postGif';
+
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
@@ -11,7 +13,8 @@ export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
             auth: Auth,
-            feeds: Feed
+            feeds: Feed,
+            gif: Gif
         }),
         applyMiddleware(thunk, logger)
     );
