@@ -46,10 +46,10 @@ export const loginUser = (creds) => (dispatch) => {
             error.response = response;
             throw error;
         }
-        },
-        error => {
-            throw error;
-        })
+    },
+    error => {
+        throw error;
+    })
     .then(response => response.json())
     .then(response => {
         console.log('response.json', response)
@@ -154,27 +154,31 @@ export const postGifSuccess = (data) => {
 
 export const postGifFailed = (errmess) => {
     return {
-        type: ActionTypes.POST_GIF_SUCCESS,
+        type: ActionTypes.POST_GIF_FAILED,
         payload: errmess
     }
 }
         
 
-export const postGif = (file) => (dispatch) => {
+export const postGif = (title, file) => (dispatch) => {
+
+    
+     console.log('title', title)
+     console.log('file', file)
     dispatch(postGifloading(true))
 
-    const form = new FormData(this.refs.myForm);
+    const form = new FormData();
+    form.append('title', title);
     form.append('image', file);
 
     const bearer = 'Bearer ' + localStorage.getItem('token'); 
-
+    console.log('form', form)
     return fetch(baseUrl + 'api/v1/gifs', {
         method: 'POST',
         headers: { 
             'Authorization': bearer
         },
-        body: form,
-        credentials: '*'
+        body: form
     })
     .then(response => {
         if (response.ok) {

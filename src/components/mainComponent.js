@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Feed from './homeComponent';
+import Feed from './feedComponent';
 //import { Navbar, NavbarBrand } from 'reactstrap';
 import { connect } from 'react-redux';
 
@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
   loginUser: (creds) => dispatch(loginUser(creds)),
   logoutUser: () => dispatch(logoutUser()),
   fetchFeed: () => {dispatch(fetchFeed())},
-  postGif: (file) => dispatch(postGif(file))
+  postGif: (title, file) => dispatch(postGif(title, file))
  });
 
 class Main extends Component {
@@ -46,7 +46,7 @@ class Main extends Component {
           loginUser={this.props.loginUser} 
           logoutUser={this.props.logoutUser}
           />
-        <RenderPostForm />
+        <RenderPostForm postGif={this.props.postGif} />
         <Switch>
               <Route path='/home' component={HomePage} />
               <Redirect to="/home" />

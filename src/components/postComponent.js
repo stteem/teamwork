@@ -22,12 +22,14 @@ class RenderPostForm extends Component {
         
         this.state = {
           isArticleModalOpen: false,
-          isModalOpen: false
+          isModalOpen: false,
+          file: null
         };
 
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleArticleModal = this.toggleArticleModal.bind(this);
-        this.handleGifPost = this.handleGifPost.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onFileInputChange = this.onFileInputChange.bind(this);
     }
 
     toggleModal() {
@@ -42,24 +44,19 @@ class RenderPostForm extends Component {
         });
     }
 
-    handleGifPost(event, e) {
-        this.toggleModal();
-        this.props.postGif({
-
-            title: this.title.value, 
-            image: e.target.files[0],         
-        });
+    onFileInputChange(e) {
         console.log(e.target.files[0]);
+        this.setState({file: e.target.files[0]});
+        console.log('state', this.state.file);
+    }
+
+    handleSubmit(event) {
         event.preventDefault();
+        this.toggleModal();
+        this.props.postGif(this.title.value, this.state.file);
+        console.log('submit state', {title: this.title.value, image: this.state.file});
     }
 
-    onFileInputChange(event) {
-        console.log(event.target.files[0]);
-    }
-
-    onChangeInput(e) {
-        console.log(e.target.value)
-    }
 
     /*handleSubmit(event) {
         this.props.postGif({title: this.title.value, image: event.target.files[0]});
@@ -79,7 +76,7 @@ class RenderPostForm extends Component {
 		         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Post Gif</ModalHeader>
                     <ModalBody>
-                    	<Form onSubmit={this.handleGifPost}>
+                    	<Form onSubmit={this.handleSubmit}>
                             <FormGroup>
                                 <Label htmlFor="title">Title</Label>
                                 <Input type="text" id="title" name="title"
@@ -88,11 +85,10 @@ class RenderPostForm extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="image">Gif of Life</Label>
-        						<CustomInput type="file" id="image" name="image" label="Yo, pick a gif!"
-                                onChange={this.onFileInputChange} />
-                                <form id="upload_form" ref="myForm" encType="multipart/form-data">
-                                </form>
                             </FormGroup>
+                            <CustomInput type="file" id="image" name="image" label="Yo, pick a gif!"
+                                onChange={this.onFileInputChange} />
+
                             <Button type="submit" value="submit" color="primary">Post</Button>
                         </Form>
                     </ModalBody>
