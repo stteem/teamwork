@@ -158,7 +158,13 @@ export const postGifFailed = (errmess) => {
         payload: errmess
     }
 }
-        
+
+export const addFeed = (feed) => {
+    return {
+        type: ActionTypes.ADD_FEED,
+        payload: feed
+    }
+}
 
 export const postGif = (title, file) => (dispatch) => {
 
@@ -190,11 +196,92 @@ export const postGif = (title, file) => (dispatch) => {
             error.response = response;
             throw error;
         }
+    },
+    error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addFeed(response)))
+    //.then(response => dispatch(postGifSuccess(response)))
+    .catch(error => dispatch(postGifFailed(error.message)));
+}
+
+
+//FETCH COMMENTS
+
+export const commentsFailed = (errmess) => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errmess
+});
+
+export const addComments = (comments) => ({
+    type: ActionTypes.ADD_COMMENTS,
+    payload: comments
+});
+
+
+export const fetchComments = () => (dispatch) => {
+    return fetch(baseUrl + 'comments')
+        .then(response => {
+            if (response.ok) {
+                return response;
+            }
+            else {
+                var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                error.response = response;
+                throw error;
+            }
         },
         error => {
-            throw error;
+            var errmess = new Error(error.message);
+            throw errmess;
         })
         .then(response => response.json())
-        .then(response => dispatch(postGifSuccess(response)))
-        .catch(error => dispatch(postGifFailed(error.message)));
+        .then(comments => dispatch(addComments(comments)))
+        .catch(error => dispatch(commentsFailed(error.message)));
 }
+
+
+
+//ADD COMMENT
+
+export const addComment = (comment) => ({
+    type: ActionTypes.ADD_COMMENT,
+    payload: comment
+});
+
+export const postCommentFailed = (errmess) => ({
+    type: ActionTypes.ADD_COMMENT_FAILED,
+    payload: errmess
+});
+
+export const postComment = (comment ) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+    return fetch(baseUrl + 'api/v1/gifs/:gifid/comment', {
+        method: 'POST',
+        headers: { 
+            'Authorization': bearer
+        },
+        body: comment
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('response', response)
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            console.log('error', error)
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addComment(response)))
+    .catch(error => dispatch(postCommentFailed(error.message)));
+}
+
+

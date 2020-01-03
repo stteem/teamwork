@@ -3,25 +3,17 @@ import { Card, CardImg, CardTitle, CardBody, CardSubtitle, CardText } from 'reac
 import { Link } from 'react-router-dom';
 import { Loading } from './loadingComponent';
 
-function validURL(str) {
-  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
-  return !!pattern.test(str);
-}
 
-function RenderFeedItem({ feed, gif, onClick }) {
- if (validURL(feed.item)) {
+
+function RenderFeedItem({ feed, onClick }) {
+ if (feed.imageurl != null) {
     return(
         <Card>
+            <Link to={`/home/${feed.itemid}`} >
             <CardBody>
               <CardTitle>{feed.title}</CardTitle>
             </CardBody>
-            <Link to={`/home/${feed.id}`} >
-                <CardImg width="100%" src={feed.item} alt={feed.title} />
+                <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
             </Link>
         </Card>
     );
@@ -29,57 +21,110 @@ function RenderFeedItem({ feed, gif, onClick }) {
  else {
     return(
         <Card>
+            <Link to={`/home/${feed.itemid}`} >
             <CardBody>
               <CardTitle>{feed.title}</CardTitle>
                 <CardSubtitle></CardSubtitle>
             </CardBody>
             <CardBody>
-            <CardText>{feed.item}</CardText>
+                <CardText>{feed.article}</CardText>
             </CardBody>
+            </Link>
         </Card>
     );
  }
     
 }
 
-const Feed = (props) => {
 
-    const feeds = props.feeds.feeds.map((feed) => {
-        return (
-            <div className="row centreItem">
-                <div key={feed.id} className="col-12 col-md-8 m-1">
-                    <RenderFeedItem feed={feed} />
-                </div>
-            </div>
+function RenderGifItem({feed, onClick}) {
+    if (feed.imageurl != null) {
+        return(
+            <Card>
+                <CardBody>
+                  <CardTitle>{feed.title}</CardTitle>
+                </CardBody>
+                <Link to={`/home/${feed.itemid}`} >
+                    <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
+                </Link>
+            </Card>
         );
-    });
+    }
+    if (feed.article != null) {
+        return(
+            <Card>
+                <CardBody>
+                  <CardTitle>{feed.title}</CardTitle>
+                    <CardSubtitle></CardSubtitle>
+                </CardBody>
+                <CardBody>
+                    <CardText>{feed.article}</CardText>
+                </CardBody>
+            </Card>
+        );
+    }
+    else{
+        return(
+            <div></div>
+        );
+    }
+}
+
+
+class Feed extends React.Component {
+
+
+    render() {
+
+        const feed = this.props.feeds.feeds.map((feed) => {
+            return (
+                <div className="row centreItem">
+                    <div key={feed.itemid} className="col-12 col-md-8 m-1">
+                        <RenderFeedItem feed={feed} />
+                    </div>
+                </div>
+            );
+        });
+
+        const singleFeed = this.props.feeds.feed.map((feed) => {
+            return (
+                <div className="row centreItem">
+                    <div key={feed.itemid} className="col-12 col-md-8 m-1">
+                        <RenderGifItem feed={feed} />
+                    </div>
+                </div>
+            );           
+        });
+        
+
+        if (this.props.feeds.isLoading) {
+            return(
+                <div className="container spinner">
+                    <div className="row">
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+        else if (this.props.feeds.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">
+                        <h4>{this.props.feeds.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else
+            return (
+                <div className="container containerBorder">
+                    {singleFeed}
+                    {feed}
+                </div>
+            );
+    }
 
     
-
-    if (props.feeds.isLoading) {
-        return(
-            <div className="container spinner">
-                <div className="row">
-                    <Loading />
-                </div>
-            </div>
-        );
-    }
-    else if (props.feeds.errMess) {
-        return(
-            <div className="container">
-                <div className="row">
-                    <h4>{props.feeds.errMess}</h4>
-                </div>
-            </div>
-        );
-    }
-    else
-        return (
-            <div className="container containerBorder">
-                {feeds}
-            </div>
-        );
 }
 
 

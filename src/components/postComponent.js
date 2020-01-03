@@ -54,7 +54,6 @@ class RenderPostForm extends Component {
         event.preventDefault();
         this.toggleModal();
         this.props.postGif(this.title.value, this.state.file);
-        console.log('submit state', {title: this.title.value, image: this.state.file});
     }
 
 
