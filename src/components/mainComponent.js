@@ -5,10 +5,10 @@ import { connect } from 'react-redux';
 
 import Header from './headerComponent';
 import RenderPostForm from './postComponent';
-//import FeedUpdate from './feedUpdateComponent';
+import ItemDetail from './commentComponent';
 
 
-import { loginUser, logoutUser, fetchFeed, postGif } from '../redux/ActionCreators';
+import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments } from '../redux/ActionCreators';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 
 
@@ -17,7 +17,8 @@ const mapStateToProps = state => {
     return {
       auth: state.auth,
       feed: state.feeds,
-      gif: state.gif
+      gif: state.gif,
+      item: state.item
     }
 }
 
@@ -25,13 +26,15 @@ const mapDispatchToProps = (dispatch) => ({
   loginUser: (creds) => dispatch(loginUser(creds)),
   logoutUser: () => dispatch(logoutUser()),
   fetchFeed: () => {dispatch(fetchFeed())},
-  postGif: (title, file) => dispatch(postGif(title, file))
+  postGif: (title, file) => dispatch(postGif(title, file)),
+  fetchImageAndComments: (itemid) => dispatch(fetchImageAndComments(itemid))
  });
 
 class Main extends Component {
 
   componentDidMount(){
     this.props.fetchFeed();
+    //this.props.fetchImageAndComments(55);
     console.log('Component DID MOUNT!')
   }
 
@@ -57,11 +60,15 @@ class Main extends Component {
 
   render() {
 
-    /*const HomePage = () => {
+    const ItemWithId = ({match}) => {
       return(
-        <Feed feeds={this.props.feed} />
+        
+        <ItemDetail item={this.props.item.item.data.filter((data) => data.itemid === match.params.itemid)[0]}
+          isLoading={this.props.item.isLoading}
+          errMess={this.props.item.errMess}
+          />
       );
-    }*/
+    }
     
 
     return (
@@ -72,7 +79,8 @@ class Main extends Component {
           />
         <RenderPostForm postGif={this.props.postGif} />
         <Switch>
-            <Route path='/home' component={()=> <Feed feeds={this.props.feed} />} />
+            <Route path='/home' component={()=> <Feed feeds={this.props.feed} fetchImageAndComments={this.props.fetchImageAndComments} />} />
+            <Route path="/home/:itemid" component={ItemWithId} />
             <Redirect to="/home" />
         </Switch>
       </div>

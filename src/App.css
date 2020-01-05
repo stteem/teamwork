@@ -111,3 +111,14 @@ address{
     background-color: #512DA8;
 }
 
+.comment {
+  width: 80%;
+  border: hidden;
+}
+
+.commentFlex {
+  display: flex;
+  align-items: flex-end;
+}
+
+

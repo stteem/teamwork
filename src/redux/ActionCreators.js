@@ -209,36 +209,51 @@ export const postGif = (title, file) => (dispatch) => {
 
 //FETCH COMMENTS
 
-export const commentsFailed = (errmess) => ({
-    type: ActionTypes.COMMENTS_FAILED,
-    payload: errmess
-});
-
-export const addComments = (comments) => ({
+export const addItemAndComments = (comments) => ({
     type: ActionTypes.ADD_COMMENTS,
     payload: comments
 });
 
+export const itemLoading = () => {
+    return {
+        type: ActionTypes.COMMENTS_LOADING
+    }
+}
 
-export const fetchComments = () => (dispatch) => {
-    return fetch(baseUrl + 'comments')
-        .then(response => {
-            if (response.ok) {
-                return response;
-            }
-            else {
-                var error = new Error('Error ' + response.status + ': ' + response.statusText);
-                error.response = response;
-                throw error;
-            }
-        },
-        error => {
-            var errmess = new Error(error.message);
-            throw errmess;
-        })
-        .then(response => response.json())
-        .then(comments => dispatch(addComments(comments)))
-        .catch(error => dispatch(commentsFailed(error.message)));
+export const itemFailed = (errmess) => ({
+    type: ActionTypes.COMMENTS_FAILED,
+    payload: errmess
+});
+
+
+export const fetchImageAndComments = (itemid) => (dispatch) => {
+
+    dispatch(itemLoading(true));
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+
+    return fetch(baseUrl + 'api/v1/gifs/' + itemid, {
+        headers: { 
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(item => dispatch(addItemAndComments(item)))
+    .catch(error => dispatch(itemFailed(error.message)));
 }
 
 
@@ -251,7 +266,7 @@ export const addComment = (comment) => ({
 });
 
 export const postCommentFailed = (errmess) => ({
-    type: ActionTypes.ADD_COMMENT_FAILED,
+    type: ActionTypes.COMMENT_FAILED,
     payload: errmess
 });
 

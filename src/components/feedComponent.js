@@ -1,19 +1,20 @@
 import React from 'react';
-import { Card, CardImg, CardTitle, CardBody, CardSubtitle, CardText } from 'reactstrap';
+import { Card, CardImg, CardTitle, CardBody, CardSubtitle, CardText, Form, FormGroup } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './loadingComponent';
 
 
 
-function RenderFeedItem({ feed, onClick }) {
+function RenderFeedItem({ feed, fetchImageAndComments }) {
  if (feed.imageurl != null) {
     return(
-        <Card>
-            <Link to={`/home/${feed.itemid}`} >
+        <Card onClick={() => fetchImageAndComments(feed.itemid)}>
             <CardBody>
               <CardTitle>{feed.title}</CardTitle>
             </CardBody>
+            <Link to={`/home/${feed.itemid}`} >
                 <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
+                    <CommentForm />
             </Link>
         </Card>
     );
@@ -21,7 +22,6 @@ function RenderFeedItem({ feed, onClick }) {
  else {
     return(
         <Card>
-            <Link to={`/home/${feed.itemid}`} >
             <CardBody>
               <CardTitle>{feed.title}</CardTitle>
                 <CardSubtitle></CardSubtitle>
@@ -29,7 +29,7 @@ function RenderFeedItem({ feed, onClick }) {
             <CardBody>
                 <CardText>{feed.article}</CardText>
             </CardBody>
-            </Link>
+            <CommentForm />
         </Card>
     );
  }
@@ -46,6 +46,7 @@ function RenderGifItem({feed, onClick}) {
                 </CardBody>
                 <Link to={`/home/${feed.itemid}`} >
                     <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
+                <CommentForm />
                 </Link>
             </Card>
         );
@@ -60,6 +61,7 @@ function RenderGifItem({feed, onClick}) {
                 <CardBody>
                     <CardText>{feed.article}</CardText>
                 </CardBody>
+                <CommentForm />
             </Card>
         );
     }
@@ -70,17 +72,28 @@ function RenderGifItem({feed, onClick}) {
     }
 }
 
+function CommentForm() {
+    return(
+        <div className="commentFlex">
+            Comment
+        </div>
+    );
+}
+
 
 class Feed extends React.Component {
 
+    constructor(props) {
+        super(props);
+    }
 
     render() {
 
-        const feed = this.props.feeds.feeds.map((feed) => {
+        const feed = this.props.feeds.feeds.map((feed, index) => {
             return (
                 <div className="row centreItem">
-                    <div key={feed.itemid} className="col-12 col-md-8 m-1">
-                        <RenderFeedItem feed={feed} />
+                    <div key={index} className="col-12 col-md-8 m-1">
+                        <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}/>
                     </div>
                 </div>
             );
@@ -116,15 +129,13 @@ class Feed extends React.Component {
             );
         }
         else
-            return (
-                <div className="container containerBorder">
-                    {singleFeed}
-                    {feed}
-                </div>
-            );
-    }
-
-    
+        return (
+            <div className="container containerBorder">
+                {singleFeed}
+                {feed}
+            </div>
+        );
+    }   
 }
 
 
