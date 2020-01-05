@@ -2,7 +2,7 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Auth } from './auth';
 import { Feed } from './feed';
 import { Gif } from './postGif';
-import { Item } from './singleItem'
+import { Item } from './singleItem';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
