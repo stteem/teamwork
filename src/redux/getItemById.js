@@ -7,13 +7,13 @@ export const Item = (state = {
         comment: []
     }, action) => {
     switch(action.type) {
-        case ActionTypes.ADD_COMMENTS:
+        case ActionTypes.ADD_ITEM_AND_COMMENTS:
             return {...state, isLoading: false, errMess: null, item: action.payload, comment: []};
 
-        case ActionTypes.COMMENTS_LOADING:
+        case ActionTypes.ITEM_AND_COMMENTS_LOADING:
             return {...state, isLoading: true, errMess: null, item: [], comment: []};
 
-        case ActionTypes.COMMENTS_FAILED:
+        case ActionTypes.ITEM_AND_COMMENTS_FAILED:
             return {...state, isLoading: false, errMess: action.payload, item: [], comment: []};
 
         case ActionTypes.ADD_COMMENT:

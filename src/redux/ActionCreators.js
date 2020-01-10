@@ -210,18 +210,18 @@ export const postGif = (title, file) => (dispatch) => {
 //FETCH COMMENTS
 
 export const addItemAndComments = (comments) => ({
-    type: ActionTypes.ADD_COMMENTS,
+    type: ActionTypes.ADD_ITEM_AND_COMMENTS,
     payload: comments
 });
 
 export const itemLoading = () => {
     return {
-        type: ActionTypes.COMMENTS_LOADING
+        type: ActionTypes.ITEM_AND_COMMENTS_LOADING
     }
 }
 
 export const itemFailed = (errmess) => ({
-    type: ActionTypes.COMMENTS_FAILED,
+    type: ActionTypes.ITEM_AND_COMMENTS_FAILED,
     payload: errmess
 });
 
@@ -258,7 +258,7 @@ export const fetchImageAndComments = (itemid) => (dispatch) => {
 
 
 
-//ADD COMMENT
+//POST COMMENT
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
@@ -266,14 +266,14 @@ export const addComment = (comment) => ({
 });
 
 export const postCommentFailed = (errmess) => ({
-    type: ActionTypes.COMMENT_FAILED,
+    type: ActionTypes.ADD_COMMENT_FAILED,
     payload: errmess
 });
 
-export const postComment = (comment ) => (dispatch) => {
+export const postComment = (itemId, comment ) => (dispatch) => {
 
     const bearer = 'Bearer ' + localStorage.getItem('token'); 
-    return fetch(baseUrl + 'api/v1/gifs/:gifid/comment', {
+    return fetch(baseUrl + 'api/v1/gifs/' + itemId + '/comment', {
         method: 'POST',
         headers: { 
             'Authorization': bearer

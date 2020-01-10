@@ -4,12 +4,12 @@ import Feed from './feedComponent';
 import { connect } from 'react-redux';
 
 import Header from './headerComponent';
-import RenderPostForm from './postComponent';
-import ItemDetail from './commentComponent';
+import RenderPostForm from './postImageComponent';
+import ItemDetail from './itemAndCommentComponent';
 
 
-import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments } from '../redux/ActionCreators';
-import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
+import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments, postComment } from '../redux/ActionCreators';
+import { Switch, Route, Redirect, matchPath, withRouter } from 'react-router-dom';
 
 
 
@@ -27,15 +27,43 @@ const mapDispatchToProps = (dispatch) => ({
   logoutUser: () => dispatch(logoutUser()),
   fetchFeed: () => {dispatch(fetchFeed())},
   postGif: (title, file) => dispatch(postGif(title, file)),
-  fetchImageAndComments: (itemid) => dispatch(fetchImageAndComments(itemid))
+  fetchImageAndComments: (itemid) => dispatch(fetchImageAndComments(itemid)),
+  postComment: (itemId, comment) => dispatch(postComment(itemId, comment))
  });
+
+
+
+
+
 
 class Main extends Component {
 
   componentDidMount(){
+
     this.props.fetchFeed();
-    //this.props.fetchImageAndComments(55);
+
+    //this.getParam();
+    this.getIdParamAndFetch();
+    
     console.log('Component DID MOUNT!')
+
+  }
+
+  
+
+  async getIdParamAndFetch() {
+
+    const match = matchPath(this.props.history.location.pathname, {
+      path: '/item/:itemid',
+      exact: true,
+      strict: false
+    }) 
+
+    if (match != null) {
+
+     await this.props.fetchImageAndComments(match.params.itemid);
+      console.log('Got param!')
+    }
   }
 
  /* componentWillMount() {
@@ -60,10 +88,10 @@ class Main extends Component {
 
   render() {
 
-    const ItemWithId = ({match}) => {
+    const ItemWithId = () => {
       return(
         
-        <ItemDetail item={this.props.item.item.data.filter((data) => data.itemid === match.params.itemid)[0]}
+        <ItemDetail item={this.props.item.item.data}
           isLoading={this.props.item.isLoading}
           errMess={this.props.item.errMess}
           />
@@ -79,8 +107,8 @@ class Main extends Component {
           />
         <RenderPostForm postGif={this.props.postGif} />
         <Switch>
-            <Route path='/home' component={()=> <Feed feeds={this.props.feed} fetchImageAndComments={this.props.fetchImageAndComments} />} />
-            <Route path="/home/:itemid" component={ItemWithId} />
+            <Route path='/home' component={() => <Feed feeds={this.props.feed} fetchImageAndComments={this.props.fetchImageAndComments} />} />
+            <Route path="/item/:itemid" component={ItemWithId} />
             <Redirect to="/home" />
         </Switch>
       </div>

@@ -8,13 +8,15 @@ import { Loading } from './loadingComponent';
 function RenderFeedItem({ feed, fetchImageAndComments }) {
  if (feed.imageurl != null) {
     return(
-        <Card onClick={() => fetchImageAndComments(feed.itemid)}>
+        <Card onClick={async () => await fetchImageAndComments(feed.itemid)}>
             <CardBody>
               <CardTitle>{feed.title}</CardTitle>
             </CardBody>
-            <Link to={`/home/${feed.itemid}`} >
+            <Link to={`/item/${feed.itemid}`} >
                 <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
-                    <CommentForm />
+                <CardBody>
+                    <span className="fa fa-comment fa-lg"></span>
+                </CardBody>
             </Link>
         </Card>
     );
@@ -29,7 +31,9 @@ function RenderFeedItem({ feed, fetchImageAndComments }) {
             <CardBody>
                 <CardText>{feed.article}</CardText>
             </CardBody>
-            <CommentForm />
+            <CardBody>
+                <CardSubtitle>Add a comment</CardSubtitle>
+             </CardBody>
         </Card>
     );
  }
@@ -46,7 +50,9 @@ function RenderGifItem({feed, onClick}) {
                 </CardBody>
                 <Link to={`/home/${feed.itemid}`} >
                     <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
-                <CommentForm />
+                    <CardBody>
+                        <CardSubtitle>Add a comment</CardSubtitle>
+                    </CardBody>
                 </Link>
             </Card>
         );
@@ -61,7 +67,9 @@ function RenderGifItem({feed, onClick}) {
                 <CardBody>
                     <CardText>{feed.article}</CardText>
                 </CardBody>
-                <CommentForm />
+                <CardBody>
+                    <CardSubtitle>Add a comment</CardSubtitle>
+                </CardBody>
             </Card>
         );
     }
@@ -72,13 +80,6 @@ function RenderGifItem({feed, onClick}) {
     }
 }
 
-function CommentForm() {
-    return(
-        <div className="commentFlex">
-            Comment
-        </div>
-    );
-}
 
 
 class Feed extends React.Component {
@@ -92,7 +93,7 @@ class Feed extends React.Component {
         const feed = this.props.feeds.feeds.map((feed, index) => {
             return (
                 <div className="row centreItem">
-                    <div key={index} className="col-12 col-md-8 m-1">
+                    <div key={index} className="col-12 col-md-10 m-1">
                         <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}/>
                     </div>
                 </div>

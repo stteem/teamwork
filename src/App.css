@@ -111,6 +111,10 @@ address{
     background-color: #512DA8;
 }
 
+.onhover :hover {
+  background-color: #0000001a;
+}
+
 .comment {
   width: 80%;
   border: hidden;
