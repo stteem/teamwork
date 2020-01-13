@@ -18,7 +18,8 @@ const mapStateToProps = state => {
       auth: state.auth,
       feed: state.feeds,
       gif: state.gif,
-      item: state.item
+      item: state.item,
+      comment: state.comment
     }
 }
 
@@ -42,7 +43,6 @@ class Main extends Component {
 
     this.props.fetchFeed();
 
-    //this.getParam();
     this.getIdParamAndFetch();
     
     console.log('Component DID MOUNT!')
@@ -91,9 +91,13 @@ class Main extends Component {
     const ItemWithId = () => {
       return(
         
-        <ItemDetail item={this.props.item.item.data}
+        <ItemDetail item={this.props.item}
           isLoading={this.props.item.isLoading}
           errMess={this.props.item.errMess}
+          comments={this.props.item}
+          itemid={this.props.item}
+          postComment={this.props.postComment}
+          comment={this.props.item}
           />
       );
     }

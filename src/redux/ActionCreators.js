@@ -252,7 +252,7 @@ export const fetchImageAndComments = (itemid) => (dispatch) => {
         throw errmess;
     })
     .then(response => response.json())
-    .then(item => dispatch(addItemAndComments(item)))
+    .then(response => dispatch(addItemAndComments(response.data)))
     .catch(error => dispatch(itemFailed(error.message)));
 }
 
@@ -262,23 +262,31 @@ export const fetchImageAndComments = (itemid) => (dispatch) => {
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
-    payload: comment
+    comment
 });
 
-export const postCommentFailed = (errmess) => ({
+export const addCommentFailed = (errmess) => ({
     type: ActionTypes.ADD_COMMENT_FAILED,
     payload: errmess
 });
 
 export const postComment = (itemId, comment ) => (dispatch) => {
 
+    const newComment = {
+        imageid: itemId,
+        comment: comment
+    }
+
+    console.log('Comment', newComment)
+
     const bearer = 'Bearer ' + localStorage.getItem('token'); 
     return fetch(baseUrl + 'api/v1/gifs/' + itemId + '/comment', {
         method: 'POST',
         headers: { 
+            'Content-Type': 'application/json',
             'Authorization': bearer
         },
-        body: comment
+        body: JSON.stringify(newComment)
     })
     .then(response => {
         if (response.ok) {
@@ -295,8 +303,8 @@ export const postComment = (itemId, comment ) => (dispatch) => {
         throw error;
     })
     .then(response => response.json())
-    .then(response => dispatch(addComment(response)))
-    .catch(error => dispatch(postCommentFailed(error.message)));
+    .then(response => dispatch(addComment(response.data)))
+    .catch(error => dispatch(addCommentFailed(error.message)));
 }
 
 

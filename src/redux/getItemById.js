@@ -16,9 +16,12 @@ export const Item = (state = {
         case ActionTypes.ITEM_AND_COMMENTS_FAILED:
             return {...state, isLoading: false, errMess: action.payload, item: [], comment: []};
 
+        case ActionTypes.ADD_COMMENT_FAILED:
+            return {...state, isLoading: false, errMess: action.payload, item: [], comment: []};
+
         case ActionTypes.ADD_COMMENT:
-            var comment = action.payload;
-            return {...state, feed: state.comment.concat(comment)};
+            var comment = action.comment;
+            return {...state, comment: state.comment.concat(comment)};
 
         default:
             return state;

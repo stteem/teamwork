@@ -3,6 +3,7 @@ import { Auth } from './auth';
 import { Feed } from './feed';
 import { Gif } from './postGif';
 import { Item } from './getItemById';
+import { Comment } from './comment';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
@@ -15,7 +16,8 @@ export const ConfigureStore = () => {
             auth: Auth,
             feeds: Feed,
             gif: Gif,
-            item: Item
+            item: Item,
+            comment: Comment
         }),
         applyMiddleware(thunk, logger)
     );

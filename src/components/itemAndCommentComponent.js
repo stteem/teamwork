@@ -10,48 +10,64 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 
 
-function RenderItem({item, postComment}) {
+function RenderItem({item}) {
 
     return(
         <Card>
             <CardBody>
               <CardTitle>{item.gifTitle}</CardTitle>
             </CardBody>
+            <CardBody>
                 <CardImg width="100%" src={item.url} alt={item.gifTitle} />
-                <RenderItemComments comments={item.comments} postComment={postComment} itemid={item.itemid}/>
+            </CardBody>
         </Card>
 
     );
 }
 
-function RenderItemComments({comments, postComment, itemid}) {
+function RenderItemComments({comments}) {
     if (comments != null) {
         return(
             <div className="col-12 col-md-12 m-1">
                 <ul className="list-unstyled">
-                    <Stagger in>
                         {comments.map((comment) => {
                             return (
-                                <Fade in key={comment.id}>
+                                <div in key={comment.id}>
                                     
                                     <p>{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
                                     <li>{comment.comment}</li>
                                     <hr/>
-                                </Fade>
+                                </div>
                             );
                         })}
-                    </Stagger>
                 </ul>
-                <CommentForm itemid={itemid} postComment={postComment} />
             </div>
         );
     }
     else
         return(
             <div>
-                <CommentForm itemid={itemid} postComment={postComment} />
             </div>
         );
+}
+
+function RenderSingleComment({comment}) {
+    return(
+        <div className="col-12 col-md-12 m-1">
+            <ul className="list-unstyled">
+                    {comment.map((comment) => {
+                        return (
+                            <div in key={comment.id}>
+
+                                <p>{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
+                                <li>{comment.comment}</li>
+                                <hr/>
+                            </div>
+                        );
+                    })}
+            </ul>
+        </div>
+    );
 }
 
 
@@ -132,7 +148,10 @@ class ItemDetail extends Component {
                     <div className="container">
                         <div className="row centreItem">
                             <div className="col-12 col-md-10 m-1">
-                                <RenderItem item={this.props.item} postComment={this.props.postComment} />
+                                <RenderItem item={this.props.item.item} />
+                                <RenderItemComments comments={this.props.item.item.comments} />
+                                <RenderSingleComment comment={this.props.item.comment} />
+                                <CommentForm itemid={this.props.item.item.itemid} postComment={this.props.postComment} />
                             </div> 
                         </div>
                     </div>

@@ -67,3 +67,36 @@
             );
         }
     }                            
+
+
+
+
+
+function SingleComment({comment}) {
+    if (comment != null) {
+        console.log('comment data', comment)
+        return(
+            <div className="col-12 col-md-12 m-1">
+                <ul className="list-unstyled">                
+                    <p>{new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
+                    <li>{comment.comment}</li>
+                    <hr/>        
+                </ul>
+            </div>
+        );
+    }
+    else
+        return(
+        <div>
+        </div>
+    );
+}
+
+
+const singleComment = this.props.comment.comment.map((datum) => {
+    return (
+        <div in key={datum.id}>
+            <SingleComment comment={datum} />
+        </div>
+    );
+});
