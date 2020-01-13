@@ -242,7 +242,8 @@ export const fetchImageAndComments = (itemid) => (dispatch) => {
             return response;
         }
         else {
-            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            //var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            var error = new Error('Ouch! Sorry, you have to login to proceed!');
             error.response = response;
             throw error;
         }
