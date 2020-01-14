@@ -41,17 +41,17 @@ function RenderFeedItem({ feed, fetchImageAndComments }) {
 }
 
 
-function RenderGifItem({feed, onClick}) {
+function RenderGifItem({feed, fetchImageAndComments}) {
     if (feed.imageurl != null) {
         return(
-            <Card>
+            <Card onClick={async () => await fetchImageAndComments(feed.itemid)}>
                 <CardBody>
                   <CardTitle>{feed.title}</CardTitle>
                 </CardBody>
-                <Link to={`/home/${feed.itemid}`} >
+                <Link to={`/item/${feed.itemid}`} >
                     <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
                     <CardBody>
-                        <CardSubtitle>Add a comment</CardSubtitle>
+                        <span className="fa fa-comment fa-lg"></span>
                     </CardBody>
                 </Link>
             </Card>
@@ -103,8 +103,8 @@ class Feed extends React.Component {
         const singleFeed = this.props.feeds.feed.map((feed) => {
             return (
                 <div className="row centreItem">
-                    <div key={feed.itemid} className="col-12 col-md-8 m-1">
-                        <RenderGifItem feed={feed} />
+                    <div key={feed.itemid} className="col-12 col-md-10 m-1">
+                        <RenderGifItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}/>
                     </div>
                 </div>
             );           
