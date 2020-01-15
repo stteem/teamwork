@@ -14,9 +14,11 @@ function RenderFeedItem({ feed, fetchImageAndComments, fetchArticleAndComments }
             </CardBody>
             <Link to={`/item/${feed.itemid}`} >
                 <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
-                <CardBody>
-                    <span className="fa fa-comment fa-lg"></span>
-                </CardBody>
+                <div className="article-link">
+                    <CardBody>
+                        <span className="fa fa-comment fa-lg"></span>
+                    </CardBody>
+                </div>
             </Link>
         </Card>
     );
@@ -34,9 +36,11 @@ function RenderFeedItem({ feed, fetchImageAndComments, fetchArticleAndComments }
                 <CardText>{feed.firstname} {feed.lastname} {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardText>
             </CardBody>
             <Link to={`/article/${feed.itemid}`} >
-                <CardBody>
-                    <span className="fa fa-comment fa-lg"></span>
-                 </CardBody>
+                <div className="article-link">
+                    <CardBody>
+                        <span className="fa fa-comment fa-lg"></span>
+                     </CardBody>
+                 </div>
              </Link>
         </Card>
     );
@@ -54,9 +58,11 @@ function RenderPostedGifItem({feed, fetchImageAndComments, fetchArticleAndCommen
                 </CardBody>
                 <Link to={`/item/${feed.itemid}`} >
                     <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
-                    <CardBody>
-                        <span className="fa fa-comment fa-lg"></span>
-                    </CardBody>
+                    <div className="article-link">
+                        <CardBody>
+                            <span className="fa fa-comment fa-lg"></span>
+                        </CardBody>
+                    </div>
                 </Link>
             </Card>
         );
@@ -75,9 +81,11 @@ function RenderPostedGifItem({feed, fetchImageAndComments, fetchArticleAndCommen
                     <CardText>{feed.firstname} {feed.lastname} {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardText>
                 </CardBody>
                 <Link to={`/article/${feed.itemid}`} >
-                    <CardBody>
-                        <span className="fa fa-comment fa-lg"></span>
-                    </CardBody>
+                    <div className="article-link">
+                        <CardBody>
+                            <span className="fa fa-comment fa-lg"></span>
+                        </CardBody>
+                    </div>
                 </Link>
             </Card>
         );
