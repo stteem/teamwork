@@ -111,14 +111,6 @@ address{
     background-color: #512DA8;
 }
 
-.onhover :hover {
-  background-color: #0000001a;
-}
-
-.comment {
-  width: 80%;
-  border: hidden;
-}
 
 .commentFlex {
   display: flex;
@@ -132,10 +124,6 @@ address{
 
 .item {
   margin-bottom: 30px;
-}
-
-.empty {
-  background-color: white; 
 }
 
 .article-link :hover {

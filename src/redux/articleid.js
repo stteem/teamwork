@@ -25,7 +25,7 @@ export const Article = (state = {
 
         case ActionTypes.ADD_ARTICLE_COMMENT:
             var comment = action.comment;
-            return {...state, isLoading: false, errMess: null, article: [], comment: state.comment.concat(comment)};
+            return {...state, comment: state.comment.concat(comment)};
 
         default:
             return state;

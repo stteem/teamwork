@@ -10,8 +10,8 @@ import ArticleDetail from './articleAndCommentComponent';
 
 
 
-import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments, postComment,
-         postArticle, fetchArticleAndComments } from '../redux/ActionCreators';
+import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments, postImageComment,
+         postArticle, fetchArticleAndComments, postArticleComment } from '../redux/ActionCreators';
 import { Switch, Route, Redirect, matchPath, withRouter } from 'react-router-dom';
 
 
@@ -31,9 +31,10 @@ const mapDispatchToProps = (dispatch) => ({
   fetchFeed: () => {dispatch(fetchFeed())},
   postGif: (title, file) => dispatch(postGif(title, file)),
   fetchImageAndComments: (itemid) => dispatch(fetchImageAndComments(itemid)),
-  postComment: (itemId, comment) => dispatch(postComment(itemId, comment)),
+  postImageComment: (itemid, comment) => dispatch(postImageComment(itemid, comment)),
   postArticle: (title, text) => dispatch(postArticle(title, text)),
-  fetchArticleAndComments: (articleid) => dispatch(fetchArticleAndComments(articleid))
+  fetchArticleAndComments: (articleid) => dispatch(fetchArticleAndComments(articleid)),
+  postArticleComment: (articleid, comment) => dispatch(postArticleComment(articleid, comment)),
  });
 
 
@@ -55,7 +56,7 @@ class Main extends Component {
   }
 
   
-
+  //On page reload, this function supplys image ID to the endpoint
   async getIdParamAndFetchImage() {
 
     const match = matchPath(this.props.history.location.pathname, {
@@ -71,7 +72,7 @@ class Main extends Component {
     }
   }
 
-
+  //On page reload, this function supplys article ID to the endpoint
   async getIdParamAndFetchArticle() {
 
     const match = matchPath(this.props.history.location.pathname, {
@@ -117,7 +118,7 @@ class Main extends Component {
           errMess={this.props.item.errMess}
           comments={this.props.item}
           itemid={this.props.item}
-          postComment={this.props.postComment}
+          postImageComment={this.props.postImageComment}
           comment={this.props.item}
           />
       );

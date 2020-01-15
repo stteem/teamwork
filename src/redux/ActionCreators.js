@@ -271,17 +271,17 @@ export const addCommentFailed = (errmess) => ({
     payload: errmess
 });
 
-export const postComment = (itemId, comment ) => (dispatch) => {
+export const postImageComment = (itemid, comment ) => (dispatch) => {
 
     const newComment = {
-        imageid: itemId,
+        imageid: itemid,
         comment: comment
     }
 
     console.log('Comment', newComment)
 
     const bearer = 'Bearer ' + localStorage.getItem('token'); 
-    return fetch(baseUrl + 'api/v1/gifs/' + itemId + '/comment', {
+    return fetch(baseUrl + 'api/v1/gifs/' + itemid + '/comment', {
         method: 'POST',
         headers: { 
             'Content-Type': 'application/json',
@@ -408,5 +408,55 @@ export const fetchArticleAndComments = (articleid) => (dispatch) => {
     .then(response => response.json())
     .then(response => dispatch(addArticleAndComments(response.data)))
     .catch(error => dispatch(articleFailed(error.message)));
+}
+
+
+//POST ARTICLE COMMENT
+
+export const addArticleComment = (comment) => ({
+    type: ActionTypes.ADD_ARTICLE_COMMENT,
+    comment
+});
+
+export const addArticleCommentFailed = (errmess) => ({
+    type: ActionTypes.ADD_ARTICLE_COMMENT_FAILED,
+    payload: errmess
+});
+
+export const postArticleComment = (articleid, comment ) => (dispatch) => {
+
+    const newComment = {
+        articleid: articleid,
+        comment: comment
+    }
+
+    console.log('Comment', newComment)
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+    return fetch(baseUrl + 'api/v1/articles/' + articleid + '/comment', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(newComment)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('response', response)
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            console.log('error', error)
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addArticleComment(response.data)))
+    .catch(error => dispatch(addArticleCommentFailed(error.message)));
 }
 

@@ -88,7 +88,7 @@ class CommentForm extends Component {
    
 
     handleSubmit(values) {
-        this.props.postComment(this.props.itemid, values.comment);
+        this.props.postImageComment(this.props.itemid, values.comment);
     }
 
     render() {
@@ -156,7 +156,7 @@ class ItemDetail extends Component {
                                 <RenderItem item={this.props.item.item} />
                                 <RenderItemComments comments={this.props.item.item.comments} />
                                 <RenderSingleComment comment={this.props.item.comment} />
-                                <CommentForm itemid={this.props.item.item.itemid} postComment={this.props.postComment} />
+                                <CommentForm itemid={this.props.item.item.itemid} postImageComment={this.props.postImageComment} />
                             </div> 
                         </div>
                     </div>
