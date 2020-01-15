@@ -159,9 +159,9 @@ export const postGifFailed = (errmess) => {
     }
 }
 
-export const addFeed = (feed) => {
+export const addImage = (feed) => {
     return {
-        type: ActionTypes.ADD_FEED,
+        type: ActionTypes.ADD_IMAGE,
         payload: feed
     }
 }
@@ -201,13 +201,13 @@ export const postGif = (title, file) => (dispatch) => {
         throw error;
     })
     .then(response => response.json())
-    .then(response => dispatch(addFeed(response)))
+    .then(response => dispatch(addImage(response)))
     //.then(response => dispatch(postGifSuccess(response)))
     .catch(error => dispatch(postGifFailed(error.message)));
 }
 
 
-//FETCH COMMENTS
+//FETCH IMAGE AND COMMENTS BY ID
 
 export const addItemAndComments = (comments) => ({
     type: ActionTypes.ADD_ITEM_AND_COMMENTS,
@@ -259,7 +259,7 @@ export const fetchImageAndComments = (itemid) => (dispatch) => {
 
 
 
-//POST COMMENT
+//POST IMAGE COMMENT
 
 export const addComment = (comment) => ({
     type: ActionTypes.ADD_COMMENT,
@@ -308,4 +308,105 @@ export const postComment = (itemId, comment ) => (dispatch) => {
     .catch(error => dispatch(addCommentFailed(error.message)));
 }
 
+
+
+//POST ARTICLE
+
+export const addArticle = (article) => ({
+    type: ActionTypes.ADD_ARTICLE,
+    payload: article
+});
+
+export const addArticleFailed = (errmess) => ({
+    type: ActionTypes.ADD_ARTICLE_FAILED,
+    payload: errmess
+});
+
+export const postArticle = (title, text ) => (dispatch) => {
+
+    const article = {
+        title: title,
+        text: text
+    }
+
+    console.log('Comment', article)
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+    return fetch(baseUrl + 'api/v1/articles', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(article)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('response', response)
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            console.log('error', error)
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addArticle(response.data)))
+    .catch(error => dispatch(addArticleFailed(error.message)));
+}
+
+
+//FETCH ARTICLE AND COMMENTS BY ID
+
+export const addArticleAndComments = (comments) => ({
+    type: ActionTypes.ADD_ARTICLE_AND_COMMENTS,
+    payload: comments
+});
+
+export const articleLoading = () => {
+    return {
+        type: ActionTypes.ARTICLE_AND_COMMENTS_LOADING
+    }
+}
+
+export const articleFailed = (errmess) => ({
+    type: ActionTypes.ARTICLE_AND_COMMENTS_FAILED,
+    payload: errmess
+});
+
+
+export const fetchArticleAndComments = (articleid) => (dispatch) => {
+
+    dispatch(articleLoading(true));
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+
+    return fetch(baseUrl + 'api/v1/articles/' + articleid, {
+        headers: { 
+            'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            return response;
+        }
+        else {
+            //var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            var error = new Error('Ouch! Sorry, you have to login to proceed!');
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addArticleAndComments(response.data)))
+    .catch(error => dispatch(articleFailed(error.message)));
+}
 

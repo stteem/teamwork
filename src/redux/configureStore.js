@@ -1,9 +1,8 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Auth } from './auth';
 import { Feed } from './feed';
-import { Gif } from './postGif';
-import { Item } from './getItemById';
-import { Comment } from './comment';
+import { Item } from './imageid';
+import { Article } from './articleid';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
@@ -15,9 +14,8 @@ export const ConfigureStore = () => {
         combineReducers({
             auth: Auth,
             feeds: Feed,
-            gif: Gif,
             item: Item,
-            comment: Comment
+            article: Article
         }),
         applyMiddleware(thunk, logger)
     );

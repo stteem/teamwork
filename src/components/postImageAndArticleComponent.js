@@ -28,8 +28,9 @@ class RenderPostForm extends Component {
 
         this.toggleModal = this.toggleModal.bind(this);
         this.toggleArticleModal = this.toggleArticleModal.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleImageSubmit = this.handleImageSubmit.bind(this);
         this.onFileInputChange = this.onFileInputChange.bind(this);
+        this.handleArticleSubmit = this.handleArticleSubmit.bind(this);
     }
 
     toggleModal() {
@@ -50,10 +51,16 @@ class RenderPostForm extends Component {
         console.log('state', this.state.file);
     }
 
-    handleSubmit(event) {
+    handleImageSubmit(event) {
         event.preventDefault();
         this.toggleModal();
         this.props.postGif(this.title.value, this.state.file);
+    }
+
+    handleArticleSubmit(event) {
+        event.preventDefault();
+        this.toggleArticleModal();
+        this.props.postArticle(this.title.value, this.article.value);
     }
 
 
@@ -75,7 +82,7 @@ class RenderPostForm extends Component {
 		         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Post Gif</ModalHeader>
                     <ModalBody>
-                    	<Form onSubmit={this.handleSubmit}>
+                    	<Form onSubmit={this.handleImageSubmit}>
                             <FormGroup>
                                 <Label htmlFor="title">Title</Label>
                                 <Input type="text" id="title" name="title"
@@ -95,7 +102,7 @@ class RenderPostForm extends Component {
                 <Modal isOpen={this.state.isArticleModalOpen} toggle={this.toggleArticleModal}>
                     <ModalHeader toggle={this.toggleArticleModal}>Post Article</ModalHeader>
                     <ModalBody>
-                    	<Form onSubmit={this.handleArticlePost}>
+                    	<Form onSubmit={this.handleArticleSubmit}>
                             <FormGroup>
                                 <Label htmlFor="title">Title</Label>
                                 <Input type="text" id="title" name="title"

@@ -4,11 +4,14 @@ import Feed from './feedComponent';
 import { connect } from 'react-redux';
 
 import Header from './headerComponent';
-import RenderPostForm from './postImageComponent';
+import RenderPostForm from './postImageAndArticleComponent';
 import ItemDetail from './itemAndCommentComponent';
+import ArticleDetail from './articleAndCommentComponent';
 
 
-import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments, postComment } from '../redux/ActionCreators';
+
+import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments, postComment,
+         postArticle, fetchArticleAndComments } from '../redux/ActionCreators';
 import { Switch, Route, Redirect, matchPath, withRouter } from 'react-router-dom';
 
 
@@ -17,9 +20,8 @@ const mapStateToProps = state => {
     return {
       auth: state.auth,
       feed: state.feeds,
-      gif: state.gif,
       item: state.item,
-      comment: state.comment
+      article: state.article
     }
 }
 
@@ -29,7 +31,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchFeed: () => {dispatch(fetchFeed())},
   postGif: (title, file) => dispatch(postGif(title, file)),
   fetchImageAndComments: (itemid) => dispatch(fetchImageAndComments(itemid)),
-  postComment: (itemId, comment) => dispatch(postComment(itemId, comment))
+  postComment: (itemId, comment) => dispatch(postComment(itemId, comment)),
+  postArticle: (title, text) => dispatch(postArticle(title, text)),
+  fetchArticleAndComments: (articleid) => dispatch(fetchArticleAndComments(articleid))
  });
 
 
@@ -43,15 +47,16 @@ class Main extends Component {
 
     this.props.fetchFeed();
 
-    this.getIdParamAndFetch();
-    
+    this.getIdParamAndFetchImage();
+    this.getIdParamAndFetchArticle();
+
     console.log('Component DID MOUNT!')
 
   }
 
   
 
-  async getIdParamAndFetch() {
+  async getIdParamAndFetchImage() {
 
     const match = matchPath(this.props.history.location.pathname, {
       path: '/item/:itemid',
@@ -62,6 +67,22 @@ class Main extends Component {
     if (match != null) {
 
      await this.props.fetchImageAndComments(match.params.itemid);
+      console.log('Got param!')
+    }
+  }
+
+
+  async getIdParamAndFetchArticle() {
+
+    const match = matchPath(this.props.history.location.pathname, {
+      path: '/article/:itemid',
+      exact: true,
+      strict: false
+    }) 
+
+    if (match != null) {
+
+     await this.props.fetchArticleAndComments(match.params.itemid);
       console.log('Got param!')
     }
   }
@@ -101,6 +122,20 @@ class Main extends Component {
           />
       );
     }
+
+    const ArticleWithId = () => {
+      return(
+        
+        <ArticleDetail article={this.props.article}
+          isLoading={this.props.article.isLoading}
+          errMess={this.props.article.errMess}
+          comments={this.props.article}
+          articleid={this.props.article}
+          postArticleComment={this.props.postArticleComment}
+          comment={this.props.article}
+          />
+      );
+    }
     
 
     return (
@@ -109,10 +144,12 @@ class Main extends Component {
           loginUser={this.props.loginUser} 
           logoutUser={this.props.logoutUser}
           />
-        <RenderPostForm postGif={this.props.postGif} />
+        <RenderPostForm postGif={this.props.postGif} postArticle={this.props.postArticle} />
         <Switch>
-            <Route path='/home' component={() => <Feed feeds={this.props.feed} fetchImageAndComments={this.props.fetchImageAndComments} />} />
+            <Route path='/home' component={() => <Feed feeds={this.props.feed} fetchImageAndComments={this.props.fetchImageAndComments} 
+                                                                        fetchArticleAndComments={this.props.fetchArticleAndComments} />} />
             <Route path="/item/:itemid" component={ItemWithId} />
+            <Route path="/article/:itemid" component={ArticleWithId} />
             <Redirect to="/home" />
         </Switch>
       </div>

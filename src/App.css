@@ -125,4 +125,17 @@ address{
   align-items: flex-end;
 }
 
+.commentBorder {
+  padding: 15px;
+  /*background-color: #f8f9fa;*/
+}
+
+.item {
+  margin-bottom: 30px;
+}
+
+.empty {
+  background-color: white; 
+}
+
 

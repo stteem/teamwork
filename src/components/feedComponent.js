@@ -5,7 +5,7 @@ import { Loading } from './loadingComponent';
 
 
 
-function RenderFeedItem({ feed, fetchImageAndComments }) {
+function RenderFeedItem({ feed, fetchImageAndComments, fetchArticleAndComments }) {
  if (feed.imageurl != null) {
     return(
         <Card onClick={async () => await fetchImageAndComments(feed.itemid)}>
@@ -23,17 +23,21 @@ function RenderFeedItem({ feed, fetchImageAndComments }) {
  }
  else {
     return(
-        <Card>
+        <Card onClick={async () => await fetchArticleAndComments(feed.itemid)}>
             <CardBody>
               <CardTitle>{feed.title}</CardTitle>
-                <CardSubtitle></CardSubtitle>
             </CardBody>
             <CardBody>
                 <CardText>{feed.article}</CardText>
             </CardBody>
             <CardBody>
-                <CardSubtitle>Add a comment</CardSubtitle>
-             </CardBody>
+                <CardText>{feed.firstname} {feed.lastname} {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardText>
+            </CardBody>
+            <Link to={`/article/${feed.itemid}`} >
+                <CardBody>
+                    <span className="fa fa-comment fa-lg"></span>
+                 </CardBody>
+             </Link>
         </Card>
     );
  }
@@ -41,7 +45,7 @@ function RenderFeedItem({ feed, fetchImageAndComments }) {
 }
 
 
-function RenderGifItem({feed, fetchImageAndComments}) {
+function RenderPostedGifItem({feed, fetchImageAndComments, fetchArticleAndComments}) {
     if (feed.imageurl != null) {
         return(
             <Card onClick={async () => await fetchImageAndComments(feed.itemid)}>
@@ -59,7 +63,7 @@ function RenderGifItem({feed, fetchImageAndComments}) {
     }
     if (feed.article != null) {
         return(
-            <Card>
+            <Card onClick={async () => await fetchArticleAndComments(feed.itemid)} >
                 <CardBody>
                   <CardTitle>{feed.title}</CardTitle>
                     <CardSubtitle></CardSubtitle>
@@ -68,8 +72,13 @@ function RenderGifItem({feed, fetchImageAndComments}) {
                     <CardText>{feed.article}</CardText>
                 </CardBody>
                 <CardBody>
-                    <CardSubtitle>Add a comment</CardSubtitle>
+                    <CardText>{feed.firstname} {feed.lastname} {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardText>
                 </CardBody>
+                <Link to={`/article/${feed.itemid}`} >
+                    <CardBody>
+                        <span className="fa fa-comment fa-lg"></span>
+                    </CardBody>
+                </Link>
             </Card>
         );
     }
@@ -94,7 +103,8 @@ class Feed extends React.Component {
             return (
                 <div className="row centreItem">
                     <div key={index} className="col-12 col-md-10 m-1">
-                        <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}/>
+                        <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
+                            fetchArticleAndComments={this.props.fetchArticleAndComments} />
                     </div>
                 </div>
             );
@@ -104,7 +114,8 @@ class Feed extends React.Component {
             return (
                 <div className="row centreItem">
                     <div key={feed.itemid} className="col-12 col-md-10 m-1">
-                        <RenderGifItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}/>
+                        <RenderPostedGifItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
+                            fetchArticleAndComments={this.props.fetchArticleAndComments} />
                     </div>
                 </div>
             );           

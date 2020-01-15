@@ -1,36 +1,35 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody,
-    CardTitle, CardSubtitle, Breadcrumb, BreadcrumbItem, Label,
-     Button, Row, Col } from 'reactstrap';
+import { Card, CardText, CardBody, CardTitle, CardSubtitle, Breadcrumb, BreadcrumbItem, Label, Button, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import { Loading } from './loadingComponent';
-import { baseUrl } from '../shared/baseUrl';
-import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 
 
-function RenderItem({item}) {
+function RenderArticle({article}) {
 
     return(
         <div className="item">
             <Card>
                 <CardBody>
-                  <CardTitle>{item.gifTitle}</CardTitle>
+                  <CardTitle>{article.title}</CardTitle>
                 </CardBody>
                 <CardBody>
-                    <CardImg width="100%" src={item.url} alt={item.gifTitle} />
+                    <CardSubtitle>{article.article}</CardSubtitle>
                 </CardBody>
                 <CardBody>
-                    <CardSubtitle>{item.firstname} {item.lastname}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(item.createdon)))}</CardSubtitle>
+                    <CardSubtitle>{article.firstname} {article.lastname}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(article.createdon)))}</CardSubtitle>
                 </CardBody>
             </Card>
         </div>
-
     );
 }
 
-function RenderItemComments({comments}) {
+    
+
+
+
+function RenderArticleComments({comments}) {
     if (comments != null) {
         return(
             <div className="col-12 col-md-12 m-1" className="commentBorder">
@@ -88,7 +87,7 @@ class CommentForm extends Component {
    
 
     handleSubmit(values) {
-        this.props.postComment(this.props.itemid, values.comment);
+        this.props.postArticleComment(this.props.articleid, values.comment);
     }
 
     render() {
@@ -114,7 +113,7 @@ class CommentForm extends Component {
 
 
 
-class ItemDetail extends Component {
+class ArticleDetail extends Component {
 
     constructor(props) {
         super(props);
@@ -153,10 +152,10 @@ class ItemDetail extends Component {
                     <div className="container">
                         <div className="row centreItem">
                             <div className="col-12 col-md-10 m-1">
-                                <RenderItem item={this.props.item.item} />
-                                <RenderItemComments comments={this.props.item.item.comments} />
-                                <RenderSingleComment comment={this.props.item.comment} />
-                                <CommentForm itemid={this.props.item.item.itemid} postComment={this.props.postComment} />
+                                <RenderArticle article={this.props.article.article} />
+                                <RenderArticleComments comments={this.props.article.article.comments} />
+                                <RenderSingleComment comment={this.props.article.comment} />
+                                <CommentForm articleid={this.props.article.article.articleid} postArticleComment={this.props.postArticleComment} />
                             </div> 
                         </div>
                     </div>
@@ -165,4 +164,4 @@ class ItemDetail extends Component {
     }
 }
 
-export default ItemDetail;
+export default ArticleDetail;
