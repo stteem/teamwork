@@ -12,14 +12,16 @@ function RenderArticle({article}) {
         <div className="item">
             <Card>
                 <CardBody>
-                  <CardTitle>{article.title}</CardTitle>
+                  <CardTitle><h4>{article.title}</h4></CardTitle>
+                  <div className="name-date">
+                  <CardSubtitle>{article.firstname} {article.lastname}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(article.createdon)))}</CardSubtitle>
+                  </div>
                 </CardBody>
+                <div className="article">
                 <CardBody>
-                    <CardSubtitle>{article.article}</CardSubtitle>
+                    <CardText>{article.article}</CardText>
                 </CardBody>
-                <CardBody>
-                    <CardSubtitle>{article.firstname} {article.lastname}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(article.createdon)))}</CardSubtitle>
-                </CardBody>
+                </div>
             </Card>
         </div>
     );
@@ -38,7 +40,7 @@ function RenderArticleComments({comments}) {
                             return (
                                 <div in key={comment.id}>
                                     
-                                    <p>{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
+                                    <p className="name-date">{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
                                     <li>{comment.comment}</li>
                                     <hr/>
                                 </div>
@@ -63,7 +65,7 @@ function RenderSingleComment({comment}) {
                         return (
                             <div in key={comment.id}>
 
-                                <p>{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
+                                <p className="name-date">{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
                                 <li>{comment.comment}</li>
                                 <hr/>
                             </div>

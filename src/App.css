@@ -44,6 +44,7 @@ body {
   }
 
   .containerBorder {
+    background-color: #0000001a;
     border-left: 1px solid rgba(0,0,0,.1);
     border-right: 1px solid #0000001a;
     padding-top: 50px;
@@ -123,11 +124,40 @@ address{
 }
 
 .item {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+}
+
+.article {
+  border-top: 1px solid #0000001a;
+}
+
+.article-feed {
+  border-top: 1px solid #0000001a;
+}
+
+.article-link {
+  color: #737373;
+  border-top: 1px solid #f8f9fa;
 }
 
 .article-link :hover {
+  color: #9E9E9E;
   background-color: #f8f9fa;
+}
+
+.longmenu {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.name-date {
+  color: #9E9E9E;
+}
+
+.closemodal {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
 }
 
 

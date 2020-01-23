@@ -1,4 +1,5 @@
 import * as ActionTypes from './ActionTypes';
+import { omit } from 'lodash';
 
 export const Feed = (state = {
         isLoading: true,
@@ -21,8 +22,9 @@ export const Feed = (state = {
 
 
         // Store posted image for feed rendering
-        case ActionTypes.POST_GIF_LOADING:
-            return {...state, isLoading: true, errMess: null, feed: []};
+
+        /*case ActionTypes.POST_GIF_LOADING:
+            return {...state, isLoading: true, errMess: null, feed: []};*/
 
         case ActionTypes.ADD_IMAGE:
             var feed = action.payload;
@@ -40,6 +42,22 @@ export const Feed = (state = {
         case ActionTypes.ADD_ARTICLE:
             var article = action.payload;
             return {...state, isLoading: false, errMess: null, feed: state.feed.concat(article)};
+
+
+        // Remove image from feed
+        case ActionTypes.DELETE_IMAGE:
+            return {...state, feeds: state.feeds.filter(feed => feed.itemid !== action.payload) };
+
+        case ActionTypes.DELETE_IMAGE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
+
+
+        // Update article in feed
+        case ActionTypes.UPDATE_ARTICLE:
+            return {...state, feeds: state.feeds.filter(feed => feed === action.payload) };
+
+        case ActionTypes.UPDATE_ARTICLE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
 
         default:
             return state;

@@ -66,7 +66,7 @@ class Header extends Component {
                                     { !this.props.auth.isAuthenticated ?
                                         <Button outline onClick={this.toggleModal}>
                                             <span className="fa fa-sign-in fa-lg"></span> Login
-                                            {this.props.auth.isFetching ?
+                                            {this.props.auth.isLoading ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
                                             }
@@ -76,7 +76,7 @@ class Header extends Component {
                                         <div className="navbar-text mr-3"><FontAwesomeIcon icon={ faUser } size="lg" /> {this.props.auth.user}</div>
                                         <Button outline onClick={this.handleLogout}>
                                             <span className="fa fa-sign-out fa-lg"></span> Logout
-                                            {this.props.auth.isFetching ?
+                                            {this.props.auth.isLoading ?
                                                 <span className="fa fa-spinner fa-pulse fa-fw"></span>
                                                 : null
                                             }

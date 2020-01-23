@@ -14,7 +14,8 @@ export const receiveLogin = (response) => {
     return {
         type: ActionTypes.LOGIN_SUCCESS,
         token: response.token,
-        user: response.firstname
+        user: response.firstname,
+        userid: response.userid
     }
 }
   
@@ -24,6 +25,9 @@ export const loginError = (message) => {
         message
     }
 }
+
+
+
 
 export const loginUser = (creds) => (dispatch) => {
     // We dispatch requestLogin to kickoff the call to the API
@@ -57,6 +61,7 @@ export const loginUser = (creds) => (dispatch) => {
             // If login was successful, set the token in local storage
             const storage = localStorage.setItem('token', response.token);
             localStorage.setItem('user', response.firstname);
+            localStorage.setItem('userid', response.userid);
             console.log('storage', storage)
             // Dispatch the success action
             dispatch(receiveLogin(response));
@@ -89,6 +94,11 @@ export const logoutUser = () => (dispatch) => {
     localStorage.removeItem('creds');
     dispatch(receiveLogout())
 }
+
+
+
+
+
 
 
 // FEED
@@ -137,20 +147,19 @@ export const fetchFeed = () => (dispatch) => {
 }
 
 
+
+
+
+
+
+
 //Post Gif
 
-export const postGifloading = () => {
+/*export const postGifloading = () => {
     return {
         type: ActionTypes.POST_GIF_LOADING
     }
-}
-
-export const postGifSuccess = (data) => {
-    return {
-        type: ActionTypes.POST_GIF_SUCCESS,
-        payload: data
-    }
-}
+}*/
 
 export const postGifFailed = (errmess) => {
     return {
@@ -171,7 +180,7 @@ export const postGif = (title, file) => (dispatch) => {
     
      console.log('title', title)
      console.log('file', file)
-    dispatch(postGifloading(true))
+    //dispatch(postGifloading(true))
 
     const form = new FormData();
     form.append('title', title);
@@ -202,9 +211,13 @@ export const postGif = (title, file) => (dispatch) => {
     })
     .then(response => response.json())
     .then(response => dispatch(addImage(response)))
-    //.then(response => dispatch(postGifSuccess(response)))
     .catch(error => dispatch(postGifFailed(error.message)));
 }
+
+
+
+
+
 
 
 //FETCH IMAGE AND COMMENTS BY ID
@@ -259,6 +272,11 @@ export const fetchImageAndComments = (itemid) => (dispatch) => {
 
 
 
+
+
+
+
+
 //POST IMAGE COMMENT
 
 export const addComment = (comment) => ({
@@ -307,6 +325,10 @@ export const postImageComment = (itemid, comment ) => (dispatch) => {
     .then(response => dispatch(addComment(response.data)))
     .catch(error => dispatch(addCommentFailed(error.message)));
 }
+
+
+
+
 
 
 
@@ -360,6 +382,11 @@ export const postArticle = (title, text ) => (dispatch) => {
 }
 
 
+
+
+
+
+
 //FETCH ARTICLE AND COMMENTS BY ID
 
 export const addArticleAndComments = (comments) => ({
@@ -411,6 +438,9 @@ export const fetchArticleAndComments = (articleid) => (dispatch) => {
 }
 
 
+
+
+
 //POST ARTICLE COMMENT
 
 export const addArticleComment = (comment) => ({
@@ -460,3 +490,103 @@ export const postArticleComment = (articleid, comment ) => (dispatch) => {
     .catch(error => dispatch(addArticleCommentFailed(error.message)));
 }
 
+
+
+
+
+
+// Update Article
+
+export const updateArticleFailed = (errmess) => ({
+    type: ActionTypes.UPDATE_ARTICLE_FAILED,
+    payload: errmess
+});
+
+export const updateArticleSuccess = (itemid) => ({
+    type: ActionTypes.UPDATE_ARTICLE,
+    payload: itemid
+});
+
+export const updateArticle = (itemid, title, article ) => (dispatch) => {
+
+    const updatedComment = {
+        itemid: itemid,
+        title: title,
+        article: article
+    }
+
+    console.log('Comment', updatedComment)
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+    return fetch(baseUrl + 'api/v1/articles/' + itemid, {
+        method: 'PATCH',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(updatedComment)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('response', response)
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            console.log('error', error)
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => {console.log(response.data); /*dispatch(updateArticleSuccess(response.data));*/ })
+    .catch(error => dispatch(updateArticleFailed(error.message)));
+}
+
+
+
+
+
+
+// Delete Image
+
+export const deleteFailed = (errmess) => ({
+    type: ActionTypes.DELETE_IMAGE_FAILED,
+    payload: errmess
+});
+
+export const deleteSuccess = (itemid) => ({
+    type: ActionTypes.DELETE_IMAGE,
+    payload: itemid
+});
+
+
+
+export const deleteImage = (itemid) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'api/v1/gifs/' + itemid, {
+        method: "DELETE",
+        headers: {
+          'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+    .then(response => response.json())
+    .then(image => { console.log('Image Deleted', image); dispatch(deleteSuccess(itemid)); })
+    .catch(error => dispatch(deleteFailed(error.message)));
+};

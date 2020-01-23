@@ -2,20 +2,29 @@ import React from 'react';
 import { Card, CardImg, CardTitle, CardBody, CardSubtitle, CardText, Form, FormGroup } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './loadingComponent';
+import DeleteDialog from './deleteDialogComponent';
+import ArticleMenuOptions from './updateModalComponent';
 
 
 
-function RenderFeedItem({ feed, fetchImageAndComments, fetchArticleAndComments }) {
+function RenderFeedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updateArticle, deleteImage }) {
  if (feed.imageurl != null) {
     return(
-        <Card onClick={async () => await fetchImageAndComments(feed.itemid)}>
+        <Card>
+        {parseInt(auth.userid, [10]) === feed.userid ?
+            <div className="longmenu"><DeleteDialog itemid={feed.itemid} deleteImage={deleteImage} /></div>
+            : null
+        }
             <CardBody>
-              <CardTitle>{feed.title}</CardTitle>
+              <CardTitle><h4>{feed.title}</h4></CardTitle>
+              <div className="name-date">
+              <CardSubtitle>{feed.firstname} {feed.lastname}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardSubtitle>
+              </div>
             </CardBody>
+            <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
             <Link to={`/item/${feed.itemid}`} >
-                <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
                 <div className="article-link">
-                    <CardBody>
+                    <CardBody onClick={async () => await fetchImageAndComments(feed.itemid)}>
                         <span className="fa fa-comment fa-lg"></span>
                     </CardBody>
                 </div>
@@ -25,19 +34,25 @@ function RenderFeedItem({ feed, fetchImageAndComments, fetchArticleAndComments }
  }
  else {
     return(
-        <Card onClick={async () => await fetchArticleAndComments(feed.itemid)}>
+        <Card>
+        {parseInt(auth.userid, [10]) === feed.userid ?
+            <div className="longmenu"><ArticleMenuOptions title={feed.title} article={feed.article} itemid={feed.itemid} updateArticle={updateArticle} /></div>
+            : null
+        }
             <CardBody>
-              <CardTitle>{feed.title}</CardTitle>
+              <CardTitle><h4>{feed.title}</h4></CardTitle>
+              <div className="name-date">
+              <CardSubtitle>{feed.firstname} {feed.lastname}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardSubtitle>
+              </div>
             </CardBody>
-            <CardBody>
-                <CardText>{feed.article}</CardText>
-            </CardBody>
-            <CardBody>
-                <CardText>{feed.firstname} {feed.lastname} {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardText>
-            </CardBody>
+            <div className="article-feed">
+                <CardBody>
+                    <CardText>{feed.article}</CardText>
+                </CardBody>
+            </div>
             <Link to={`/article/${feed.itemid}`} >
                 <div className="article-link">
-                    <CardBody>
+                    <CardBody onClick={async () => await fetchArticleAndComments(feed.itemid)}>
                         <span className="fa fa-comment fa-lg"></span>
                      </CardBody>
                  </div>
@@ -49,17 +64,24 @@ function RenderFeedItem({ feed, fetchImageAndComments, fetchArticleAndComments }
 }
 
 
-function RenderPostedGifItem({feed, fetchImageAndComments, fetchArticleAndComments}) {
+function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updateArticle, deleteImage}) {
     if (feed.imageurl != null) {
         return(
-            <Card onClick={async () => await fetchImageAndComments(feed.itemid)}>
+            <Card>
+            {parseInt(auth.userid, [10]) === feed.userid ?
+                <div className="longmenu"><DeleteDialog itemid={feed.itemid} deleteImage={deleteImage} /></div>
+                : null
+            }
                 <CardBody>
-                  <CardTitle>{feed.title}</CardTitle>
+                  <CardTitle><h4>{feed.title}</h4></CardTitle>
+                  <div className="name-date">
+                  <CardSubtitle>{feed.firstname} {feed.lastname}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardSubtitle>
+                  </div>
                 </CardBody>
+                <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
                 <Link to={`/item/${feed.itemid}`} >
-                    <CardImg width="100%" src={feed.imageurl} alt={feed.title} />
                     <div className="article-link">
-                        <CardBody>
+                        <CardBody onClick={async () => await fetchImageAndComments(feed.itemid)}>
                             <span className="fa fa-comment fa-lg"></span>
                         </CardBody>
                     </div>
@@ -69,20 +91,25 @@ function RenderPostedGifItem({feed, fetchImageAndComments, fetchArticleAndCommen
     }
     if (feed.article != null) {
         return(
-            <Card onClick={async () => await fetchArticleAndComments(feed.itemid)} >
+            <Card>
+            {parseInt(auth.userid, [10]) === feed.userid ?
+                <div className="longmenu"><ArticleMenuOptions title={feed.title} article={feed.article} itemid={feed.itemid} updateArticle={updateArticle} /></div>
+                : null
+            }
                 <CardBody>
-                  <CardTitle>{feed.title}</CardTitle>
-                    <CardSubtitle></CardSubtitle>
+                  <CardTitle><h4>{feed.title}</h4></CardTitle>
+                <div className="name-date">
+                  <CardSubtitle>{feed.firstname} {feed.lastname}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardSubtitle>
+                </div>
                 </CardBody>
-                <CardBody>
-                    <CardText>{feed.article}</CardText>
-                </CardBody>
-                <CardBody>
-                    <CardText>{feed.firstname} {feed.lastname} {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(feed.createdon)))}</CardText>
-                </CardBody>
+                <div className="article-feed">
+                    <CardBody>
+                        <CardText>{feed.article}</CardText>
+                    </CardBody>
+                </div>
                 <Link to={`/article/${feed.itemid}`} >
                     <div className="article-link">
-                        <CardBody>
+                        <CardBody onClick={async () => await fetchArticleAndComments(feed.itemid)}>
                             <span className="fa fa-comment fa-lg"></span>
                         </CardBody>
                     </div>
@@ -112,7 +139,8 @@ class Feed extends React.Component {
                 <div className="row centreItem">
                     <div key={index} className="col-12 col-md-10 m-1">
                         <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
-                            fetchArticleAndComments={this.props.fetchArticleAndComments} />
+                            fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
+                            updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} />
                     </div>
                 </div>
             );
@@ -122,8 +150,9 @@ class Feed extends React.Component {
             return (
                 <div className="row centreItem">
                     <div key={feed.itemid} className="col-12 col-md-10 m-1">
-                        <RenderPostedGifItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
-                            fetchArticleAndComments={this.props.fetchArticleAndComments} />
+                        <RenderPostedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
+                            fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
+                            updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} />
                     </div>
                 </div>
             );           

@@ -7,6 +7,8 @@ export const Item = (state = {
         comment: []
     }, action) => {
     switch(action.type) {
+
+        //Get image and comments by id
         case ActionTypes.ADD_ITEM_AND_COMMENTS:
             return {...state, isLoading: false, errMess: null, item: action.payload, comment: []};
 
@@ -16,6 +18,7 @@ export const Item = (state = {
         case ActionTypes.ITEM_AND_COMMENTS_FAILED:
             return {...state, isLoading: false, errMess: action.payload, item: [], comment: []};
 
+        //Add comment
         case ActionTypes.ADD_COMMENT_FAILED:
             return {...state, isLoading: false, errMess: action.payload, item: [], comment: []};
 
