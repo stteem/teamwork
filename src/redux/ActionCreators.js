@@ -509,13 +509,13 @@ export const updateArticleSuccess = (itemid) => ({
 
 export const updateArticle = (itemid, title, article ) => (dispatch) => {
 
-    const updatedComment = {
+    const articleUpdate = {
         itemid: itemid,
         title: title,
         article: article
     }
 
-    console.log('Comment', updatedComment)
+    console.log('Updated article', articleUpdate)
 
     const bearer = 'Bearer ' + localStorage.getItem('token'); 
     return fetch(baseUrl + 'api/v1/articles/' + itemid, {
@@ -524,7 +524,7 @@ export const updateArticle = (itemid, title, article ) => (dispatch) => {
             'Content-Type': 'application/json',
             'Authorization': bearer
         },
-        body: JSON.stringify(updatedComment)
+        body: JSON.stringify(articleUpdate)
     })
     .then(response => {
         if (response.ok) {
@@ -541,7 +541,7 @@ export const updateArticle = (itemid, title, article ) => (dispatch) => {
         throw error;
     })
     .then(response => response.json())
-    .then(response => {console.log(response.data); /*dispatch(updateArticleSuccess(response.data));*/ })
+    .then(response => {console.log(response.data); dispatch(updateArticleSuccess(response.data)); })
     .catch(error => dispatch(updateArticleFailed(error.message)));
 }
 

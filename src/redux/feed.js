@@ -1,5 +1,4 @@
 import * as ActionTypes from './ActionTypes';
-import { omit } from 'lodash';
 
 export const Feed = (state = {
         isLoading: true,
@@ -44,7 +43,7 @@ export const Feed = (state = {
             return {...state, isLoading: false, errMess: null, feed: state.feed.concat(article)};
 
 
-        // Remove image from feed
+        // Delete and remove image from feed
         case ActionTypes.DELETE_IMAGE:
             return {...state, feeds: state.feeds.filter(feed => feed.itemid !== action.payload) };
 
@@ -54,7 +53,7 @@ export const Feed = (state = {
 
         // Update article in feed
         case ActionTypes.UPDATE_ARTICLE:
-            return {...state, feeds: state.feeds.filter(feed => feed === action.payload) };
+            return {...state, feeds: state.feeds.map(feed => feed.itemid !== action.payload.itemid ? feed : {...feed, ...action.payload} )};
 
         case ActionTypes.UPDATE_ARTICLE_FAILED:
             return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
