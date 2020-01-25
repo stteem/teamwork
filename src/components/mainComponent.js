@@ -11,7 +11,7 @@ import ArticleDetail from './articleAndCommentComponent';
 
 
 import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments, postImageComment,
-         postArticle, fetchArticleAndComments, postArticleComment, updateArticle, deleteImage } from '../redux/ActionCreators';
+         postArticle, fetchArticleAndComments, postArticleComment, updateArticle, deleteImage, deleteArticle } from '../redux/ActionCreators';
 import { Switch, Route, Redirect, matchPath, withRouter } from 'react-router-dom';
 
 
@@ -36,7 +36,8 @@ const mapDispatchToProps = (dispatch) => ({
   fetchArticleAndComments: (articleid) => dispatch(fetchArticleAndComments(articleid)),
   postArticleComment: (articleid, comment) => dispatch(postArticleComment(articleid, comment)),
   updateArticle: (itemid, title, article) => dispatch(updateArticle(itemid, title, article)),
-  deleteImage: (itemid) => dispatch(deleteImage(itemid))
+  deleteImage: (itemid) => dispatch(deleteImage(itemid)),
+  deleteArticle: (itemid) => dispatch(deleteArticle(itemid))
  });
 
 
@@ -151,7 +152,8 @@ class Main extends Component {
         <Switch>
             <Route path='/home' component={() => <Feed feeds={this.props.feed} fetchImageAndComments={this.props.fetchImageAndComments} 
                                                   fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
-                                                  updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} />} />
+                                                  updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} 
+                                                  deleteArticle={this.props.deleteArticle} />} />
             <Route path="/item/:itemid" component={ItemWithId} />
             <Route path="/article/:itemid" component={ArticleWithId} />
             <Redirect to="/home" />

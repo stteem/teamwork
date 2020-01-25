@@ -220,6 +220,53 @@ export const postGif = (title, file) => (dispatch) => {
 
 
 
+// Delete Image
+
+export const deleteFailed = (errmess) => ({
+    type: ActionTypes.DELETE_IMAGE_FAILED,
+    payload: errmess
+});
+
+export const deleteSuccess = (itemid) => ({
+    type: ActionTypes.DELETE_IMAGE,
+    payload: itemid
+});
+
+
+
+export const deleteImage = (itemid) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'api/v1/gifs/' + itemid, {
+        method: "DELETE",
+        headers: {
+          'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+    .then(response => response.json())
+    .then(image => { console.log('Image Deleted', image); dispatch(deleteSuccess(itemid)); })
+    .catch(error => dispatch(deleteFailed(error.message)));
+};
+
+
+
+
+
+
+
 //FETCH IMAGE AND COMMENTS BY ID
 
 export const addItemAndComments = (comments) => ({
@@ -550,25 +597,25 @@ export const updateArticle = (itemid, title, article ) => (dispatch) => {
 
 
 
-// Delete Image
+// Delete Article
 
-export const deleteFailed = (errmess) => ({
-    type: ActionTypes.DELETE_IMAGE_FAILED,
+export const deleteArticleFailed = (errmess) => ({
+    type: ActionTypes.DELETE_ARTICLE_FAILED,
     payload: errmess
 });
 
-export const deleteSuccess = (itemid) => ({
-    type: ActionTypes.DELETE_IMAGE,
+export const deleteArticleSuccess = (itemid) => ({
+    type: ActionTypes.DELETE_ARTICLE,
     payload: itemid
 });
 
 
 
-export const deleteImage = (itemid) => (dispatch) => {
+export const deleteArticle = (itemid) => (dispatch) => {
 
     const bearer = 'Bearer ' + localStorage.getItem('token');
 
-    return fetch(baseUrl + 'api/v1/gifs/' + itemid, {
+    return fetch(baseUrl + 'api/v1/articles/' + itemid, {
         method: "DELETE",
         headers: {
           'Authorization': bearer
@@ -587,6 +634,6 @@ export const deleteImage = (itemid) => (dispatch) => {
             throw error;
       })
     .then(response => response.json())
-    .then(image => { console.log('Image Deleted', image); dispatch(deleteSuccess(itemid)); })
-    .catch(error => dispatch(deleteFailed(error.message)));
+    .then(response => { console.log('Article Deleted', response); dispatch(deleteArticleSuccess(itemid)); })
+    .catch(error => dispatch(deleteArticleFailed(error.message)));
 };

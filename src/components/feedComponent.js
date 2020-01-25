@@ -7,7 +7,7 @@ import ArticleMenuOptions from './updateModalComponent';
 
 
 
-function RenderFeedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updateArticle, deleteImage }) {
+function RenderFeedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updateArticle, deleteImage, deleteArticle }) {
  if (feed.imageurl != null) {
     return(
         <Card>
@@ -36,7 +36,7 @@ function RenderFeedItem({auth, feed, fetchImageAndComments, fetchArticleAndComme
     return(
         <Card>
         {parseInt(auth.userid, [10]) === feed.userid ?
-            <div className="longmenu"><ArticleMenuOptions title={feed.title} article={feed.article} itemid={feed.itemid} updateArticle={updateArticle} /></div>
+            <div className="longmenu"><ArticleMenuOptions title={feed.title} article={feed.article} itemid={feed.itemid} updateArticle={updateArticle} deleteArticle={deleteArticle} /></div>
             : null
         }
             <CardBody>
@@ -64,7 +64,7 @@ function RenderFeedItem({auth, feed, fetchImageAndComments, fetchArticleAndComme
 }
 
 
-function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updateArticle, deleteImage}) {
+function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updateArticle, deleteImage, deleteArticle}) {
     if (feed.imageurl != null) {
         return(
             <Card>
@@ -93,7 +93,7 @@ function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndCom
         return(
             <Card>
             {parseInt(auth.userid, [10]) === feed.userid ?
-                <div className="longmenu"><ArticleMenuOptions title={feed.title} article={feed.article} itemid={feed.itemid} updateArticle={updateArticle} /></div>
+                <div className="longmenu"><ArticleMenuOptions title={feed.title} article={feed.article} itemid={feed.itemid} updateArticle={updateArticle} deleteArticle={deleteArticle} /></div>
                 : null
             }
                 <CardBody>
@@ -136,25 +136,33 @@ class Feed extends React.Component {
 
         const feed = this.props.feeds.feeds.map((feed, index) => {
             return (
-                <div className="row centreItem">
-                    <div key={index} className="col-12 col-md-10 m-1">
-                        <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
-                            fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
-                            updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} />
-                    </div>
-                </div>
+                <ul className="list-unstyled">
+                    <li>
+                        <div className="row centreItem">
+                            <div key={index} className="col-12 col-md-10 m-1">
+                                <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
+                                    fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
+                                    updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} deleteArticle={this.props.deleteArticle} />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             );
         });
 
         const singleFeed = this.props.feeds.feed.map((feed) => {
             return (
-                <div className="row centreItem">
-                    <div key={feed.itemid} className="col-12 col-md-10 m-1">
-                        <RenderPostedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
-                            fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
-                            updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} />
-                    </div>
-                </div>
+                <ul className="list-unstyled">
+                    <li>
+                        <div className="row centreItem">
+                            <div key={feed.itemid} className="col-12 col-md-10 m-1">
+                                <RenderPostedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
+                                    fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
+                                    updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} deleteArticle={this.props.deleteArticle} />
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             );           
         });
         

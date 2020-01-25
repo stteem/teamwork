@@ -58,6 +58,14 @@ export const Feed = (state = {
         case ActionTypes.UPDATE_ARTICLE_FAILED:
             return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
 
+
+        // Delete and remove article from feed
+        case ActionTypes.DELETE_ARTICLE:
+            return {...state, feeds: state.feeds.filter(feed => feed.itemid !== action.payload) };
+
+        case ActionTypes.DELETE_ARTICLE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
+
         default:
             return state;
     }

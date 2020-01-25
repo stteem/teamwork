@@ -64,6 +64,11 @@ export default function ArticleMenuOptions(props) {
     setOpen(false);
   }
 
+  const handleArticleDelete = () => {
+    props.deleteArticle(props.itemid);
+    setOpenDialog(false);
+  }
+
   return (
     <div>
       <ArticleMenu handleOpen={handleOpen} handleOpenDialog={handleOpenDialog} >
@@ -119,7 +124,7 @@ export default function ArticleMenuOptions(props) {
           <Button onClick={handleCloseDialog} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+          <Button onClick={handleArticleDelete} color="primary" autoFocus>
             Delete
           </Button>
         </DialogActions>
