@@ -34,6 +34,11 @@ export const Feed = (state = {
 
 
 
+
+
+
+        //POSTED FEED
+
         // Store posted article for feed rendering
         case ActionTypes.ADD_ARTICLE_FAILED:
             return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
@@ -43,7 +48,29 @@ export const Feed = (state = {
             return {...state, isLoading: false, errMess: null, feed: state.feed.concat(article)};
 
 
-        // Delete and remove image from feed
+        // Update posted article in feed
+        case ActionTypes.UPDATE_POSTED_ARTICLE:
+            return {...state, feed: state.feed.map(feed => feed.itemid !== action.payload.itemid ? feed : {...feed, ...action.payload} )};
+
+        case ActionTypes.UPDATE_POSTED_ARTICLE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
+
+
+        // Delete and remove posted article from feed
+        case ActionTypes.DELETE_POSTED_ARTICLE:
+            return {...state, feed: state.feed.filter(feed => feed.itemid !== action.payload) };
+
+        case ActionTypes.DELETE_POSTED_ARTICLE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
+
+
+
+
+
+
+        // MAIN FEED
+
+        // Delete and remove image from main feed
         case ActionTypes.DELETE_IMAGE:
             return {...state, feeds: state.feeds.filter(feed => feed.itemid !== action.payload) };
 
@@ -51,7 +78,7 @@ export const Feed = (state = {
             return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
 
 
-        // Update article in feed
+        // Update article in main feed
         case ActionTypes.UPDATE_ARTICLE:
             return {...state, feeds: state.feeds.map(feed => feed.itemid !== action.payload.itemid ? feed : {...feed, ...action.payload} )};
 
@@ -59,7 +86,7 @@ export const Feed = (state = {
             return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
 
 
-        // Delete and remove article from feed
+        // Delete and remove article from main feed
         case ActionTypes.DELETE_ARTICLE:
             return {...state, feeds: state.feeds.filter(feed => feed.itemid !== action.payload) };
 

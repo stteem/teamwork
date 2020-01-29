@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardText, CardBody, CardTitle, CardSubtitle, Breadcrumb, BreadcrumbItem, Label, Button, Row, Col } from 'reactstrap';
+import { Card, CardText, CardBody, CardTitle, CardSubtitle, Breadcrumb, BreadcrumbItem, Button, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import { Loading } from './loadingComponent';
@@ -116,10 +116,6 @@ class CommentForm extends Component {
 
 
 class ArticleDetail extends Component {
-
-    constructor(props) {
-        super(props);
-    }
 
 
     render() { 

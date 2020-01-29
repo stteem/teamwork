@@ -3,7 +3,9 @@ import { Card, CardImg, CardTitle, CardBody, CardSubtitle, CardText, Form, FormG
 import { Link } from 'react-router-dom';
 import { Loading } from './loadingComponent';
 import DeleteDialog from './deleteDialogComponent';
-import ArticleMenuOptions from './updateModalComponent';
+import ArticleMenuOptions from './alterArticleComponent';
+import PostedArticleMenuOptions from './alterPostedArticleComponent';
+import RenderPostForm from './postImageAndArticleComponent';
 
 
 
@@ -64,7 +66,7 @@ function RenderFeedItem({auth, feed, fetchImageAndComments, fetchArticleAndComme
 }
 
 
-function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updateArticle, deleteImage, deleteArticle}) {
+function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updatePostedArticle, deleteImage, deletePostedArticle}) {
     if (feed.imageurl != null) {
         return(
             <Card>
@@ -93,7 +95,8 @@ function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndCom
         return(
             <Card>
             {parseInt(auth.userid, [10]) === feed.userid ?
-                <div className="longmenu"><ArticleMenuOptions title={feed.title} article={feed.article} itemid={feed.itemid} updateArticle={updateArticle} deleteArticle={deleteArticle} /></div>
+                <div className="longmenu"><PostedArticleMenuOptions title={feed.title} article={feed.article} itemid={feed.itemid} 
+                    updatePostedArticle={updatePostedArticle} deletePostedArticle={deletePostedArticle} /></div>
                 : null
             }
                 <CardBody>
@@ -139,7 +142,7 @@ class Feed extends React.Component {
                 <ul className="list-unstyled">
                     <li>
                         <div className="row centreItem">
-                            <div key={index} className="col-12 col-md-10 m-1">
+                            <div key={index} className="col-12 col-md-6 m-1">
                                 <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
                                     fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
                                     updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} deleteArticle={this.props.deleteArticle} />
@@ -155,10 +158,11 @@ class Feed extends React.Component {
                 <ul className="list-unstyled">
                     <li>
                         <div className="row centreItem">
-                            <div key={feed.itemid} className="col-12 col-md-10 m-1">
+                            <div key={feed.itemid} className="col-12 col-md-6 m-1">
                                 <RenderPostedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
                                     fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
-                                    updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} deleteArticle={this.props.deleteArticle} />
+                                    updatePostedArticle={this.props.updatePostedArticle} deleteImage={this.props.deleteImage} 
+                                    deletePostedArticle={this.props.deletePostedArticle} />
                             </div>
                         </div>
                     </li>
@@ -187,9 +191,14 @@ class Feed extends React.Component {
         }
         else
         return (
-            <div className="container containerBorder">
-                {singleFeed}
-                {feed}
+            <div>
+                <div>
+                    <RenderPostForm postGif={this.props.postGif} postArticle={this.props.postArticle} />
+                </div>
+                <div className=" containerBorder">
+                    {singleFeed}
+                    {feed}
+                </div>
             </div>
         );
     }   

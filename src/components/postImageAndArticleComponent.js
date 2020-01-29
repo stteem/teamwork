@@ -72,12 +72,13 @@ class RenderPostForm extends Component {
 	render() {
 		return(
 			<div>
-				<div className="container postdiv">
+				<div className="postdiv">
 		            <div className="row">
-		            <div className="articleField"></div>
-		            <Button className="gifbutton" onClick={this.toggleModal}><FontAwesomeIcon icon={ faImage } style={{ color: 'purple' }} size="lg" />  Post Gif</Button>
-		            <Button className="gifbutton" onClick={this.toggleArticleModal}><FontAwesomeIcon icon={ faKeyboard } style={{ color: 'violet' }} size="lg" />  Post Article</Button>
-		            </div>
+                        <div className="col-12 col-md-12 m-1">
+        		            <Button className="gifbutton" onClick={this.toggleModal}><FontAwesomeIcon icon={ faImage } style={{ color: 'purple' }} size="lg" /><strong> Gif</strong></Button>
+        		            <Button className="gifbutton" onClick={this.toggleArticleModal}><FontAwesomeIcon icon={ faKeyboard } style={{ color: 'violet' }} size="lg" /><strong> Article</strong></Button>
+                        </div>
+                    </div>
 		        </div>
 		         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Post Gif</ModalHeader>

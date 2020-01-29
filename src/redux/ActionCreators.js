@@ -75,6 +75,12 @@ export const loginUser = (creds) => (dispatch) => {
     .catch(error => dispatch(loginError(error.message)))
 };
 
+
+
+
+
+// Logs the user out
+
 export const requestLogout = () => {
     return {
       type: ActionTypes.LOGOUT_REQUEST
@@ -87,15 +93,13 @@ export const receiveLogout = () => {
     }
 }
 
-// Logs the user out
+
 export const logoutUser = () => (dispatch) => {
     dispatch(requestLogout())
     localStorage.removeItem('token');
     localStorage.removeItem('creds');
     dispatch(receiveLogout())
 }
-
-
 
 
 
@@ -288,7 +292,7 @@ export const itemFailed = (errmess) => ({
 
 export const fetchImageAndComments = (itemid) => (dispatch) => {
 
-    dispatch(itemLoading(true));
+    dispatch(itemLoading());
 
     const bearer = 'Bearer ' + localStorage.getItem('token'); 
 
@@ -597,6 +601,60 @@ export const updateArticle = (itemid, title, article ) => (dispatch) => {
 
 
 
+// Update Posted Article
+
+export const updatePostedArticleFailed = (errmess) => ({
+    type: ActionTypes.UPDATE_POSTED_ARTICLE_FAILED,
+    payload: errmess
+});
+
+export const updatePostedArticleSuccess = (itemid) => ({
+    type: ActionTypes.UPDATE_POSTED_ARTICLE,
+    payload: itemid
+});
+
+export const updatePostedArticle = (itemid, title, article ) => (dispatch) => {
+
+    const articleUpdate = {
+        itemid: itemid,
+        title: title,
+        article: article
+    }
+
+    console.log('Updated article', articleUpdate)
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+    return fetch(baseUrl + 'api/v1/articles/' + itemid, {
+        method: 'PATCH',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(articleUpdate)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('response', response)
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            console.log('error', error)
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => {console.log(response.data); dispatch(updatePostedArticleSuccess(response.data)); })
+    .catch(error => dispatch(updatePostedArticleFailed(error.message)));
+}
+
+
+
+
+
 // Delete Article
 
 export const deleteArticleFailed = (errmess) => ({
@@ -636,4 +694,50 @@ export const deleteArticle = (itemid) => (dispatch) => {
     .then(response => response.json())
     .then(response => { console.log('Article Deleted', response); dispatch(deleteArticleSuccess(itemid)); })
     .catch(error => dispatch(deleteArticleFailed(error.message)));
+};
+
+
+
+
+
+
+// Delete Posted Article
+
+export const deletePostedArticleFailed = (errmess) => ({
+    type: ActionTypes.DELETE_POSTED_ARTICLE_FAILED,
+    payload: errmess
+});
+
+export const deletePostedArticleSuccess = (itemid) => ({
+    type: ActionTypes.DELETE_POSTED_ARTICLE,
+    payload: itemid
+});
+
+
+
+export const deletePostedArticle = (itemid) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'api/v1/articles/' + itemid, {
+        method: "DELETE",
+        headers: {
+          'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+    .then(response => response.json())
+    .then(response => { console.log('Posted Article Deleted', response); dispatch(deletePostedArticleSuccess(itemid)); })
+    .catch(error => dispatch(deletePostedArticleFailed(error.message)));
 };
