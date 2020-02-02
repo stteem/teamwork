@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Feed from './feedComponent';
-//import { Navbar, NavbarBrand } from 'reactstrap';
 import { connect } from 'react-redux';
 
 import Header from './headerComponent';
@@ -8,12 +7,13 @@ import Header from './headerComponent';
 import ItemDetail from './itemAndCommentComponent';
 import ArticleDetail from './articleAndCommentComponent';
 import Login from './loginComponent';
-
-
+import CreateUser from './createUserComponent';
+import About from './aboutComponent';
+import { actions } from 'react-redux-form';
 
 import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments, postImageComment,
          postArticle, fetchArticleAndComments, postArticleComment, updateArticle, updatePostedArticle, 
-         deleteImage, deleteArticle, deletePostedArticle } from '../redux/ActionCreators';
+         deleteImage, deleteArticle, deletePostedArticle, postNewUser } from '../redux/ActionCreators';
 import { Switch, Route, Redirect, matchPath, withRouter } from 'react-router-dom';
 
 
@@ -23,7 +23,8 @@ const mapStateToProps = state => {
       auth: state.auth,
       feed: state.feeds,
       item: state.item,
-      article: state.article
+      article: state.article,
+      createduser: state.createduser
     }
 }
 
@@ -41,7 +42,9 @@ const mapDispatchToProps = (dispatch) => ({
   updatePostedArticle: (itemid, title, article) => dispatch(updatePostedArticle(itemid, title, article)),
   deleteImage: (itemid) => dispatch(deleteImage(itemid)),
   deleteArticle: (itemid) => dispatch(deleteArticle(itemid)),
-  deletePostedArticle: (itemid) => dispatch(deletePostedArticle(itemid))
+  deletePostedArticle: (itemid) => dispatch(deletePostedArticle(itemid)),
+  postNewUser: (values) => dispatch(postNewUser(values)),
+  resetCreateUserForm: () => { dispatch(actions.reset('reguser'))}
  });
 
 
@@ -174,6 +177,8 @@ class Main extends Component {
                                                   updatePostedArticle={this.props.updatePostedArticle} deletePostedArticle={this.props.deletePostedArticle} />} />
             <PrivateRoute path="/item/:itemid" component={ItemWithId} />
             <PrivateRoute path="/article/:itemid" component={ArticleWithId} />
+            <PrivateRoute path="/createuser" component={() => <CreateUser resetCreateUserForm={this.props.resetCreateUserForm} postNewUser={this.props.postNewUser} />} />
+            <Route path="/about" component={() =>  <About /> } />
             <Redirect to="/home" />
         </Switch>
       </div>

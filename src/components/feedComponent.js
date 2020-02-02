@@ -139,10 +139,10 @@ class Feed extends React.Component {
 
         const feed = this.props.feeds.feeds.map((feed, index) => {
             return (
-                <ul className="list-unstyled">
+                <ul key={index} className="list-unstyled">
                     <li>
                         <div className="row centreItem">
-                            <div key={index} className="col-12 col-md-6 m-1">
+                            <div className="col-12 col-md-6 m-1">
                                 <RenderFeedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
                                     fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
                                     updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} deleteArticle={this.props.deleteArticle} />
@@ -153,12 +153,12 @@ class Feed extends React.Component {
             );
         });
 
-        const singleFeed = this.props.feeds.feed.map((feed) => {
+        const singleFeed = this.props.feeds.feed.map((feed, index) => {
             return (
-                <ul className="list-unstyled">
+                <ul key={index} className="list-unstyled">
                     <li>
                         <div className="row centreItem">
-                            <div key={feed.itemid} className="col-12 col-md-6 m-1">
+                            <div className="col-12 col-md-6 m-1">
                                 <RenderPostedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
                                     fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
                                     updatePostedArticle={this.props.updatePostedArticle} deleteImage={this.props.deleteImage} 

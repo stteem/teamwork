@@ -59,8 +59,11 @@ class RenderPostForm extends Component {
 
     handleArticleSubmit(event) {
         event.preventDefault();
-        this.toggleArticleModal();
-        this.props.postArticle(this.title.value, this.article.value);
+        if (this.title.value !== '' || this.article.value !== '') {
+            this.toggleArticleModal();
+            this.props.postArticle(this.title.value, this.article.value);
+        }
+        else return false;
     }
 
 
@@ -96,7 +99,7 @@ class RenderPostForm extends Component {
                             <CustomInput type="file" id="image" name="image" label="Yo, pick a gif!"
                                 onChange={this.onFileInputChange} />
 
-                            <Button type="submit" value="submit" color="primary">Post</Button>
+                            <Button type="submit" value="submit" className="buttn">Post</Button>
                         </Form>
                     </ModalBody>
                 </Modal>
@@ -115,7 +118,7 @@ class RenderPostForm extends Component {
         						innerRef={(input) => this.article=input} />
                             </FormGroup>
                            
-                            <Button type="submit" value="submit" color="primary">Post</Button>
+                            <Button type="submit" value="submit" className="buttn" >Post</Button>
                         </Form>
                     </ModalBody>
                 </Modal>

@@ -17,13 +17,35 @@
   color: white;
 }
 
+body {
+  font-family: "Times New Roman", serif;
+  background-color: #0000001a;
+}
+
 .App-link {
   color: #09d3ac;
 }
 */
+
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300);
+
 body {
-  font-family: "Times New Roman", serif;
+  font-family: Lato, Helvetica, sans-serif, "Times New Roman", serif;
   background-color: #0000001a;
+  font-size: 16px;
+  width: 100%;
+}
+
+.App-header {
+  background-color: #9575CD;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /*font-size: calc(10px + 2vmin);*/
+  color: floralwhite;
+  padding: 20px;
 }
 
 .row-header{
@@ -74,12 +96,26 @@ body {
 .gifbutton {
   margin: 10px;
   border-radius: 15px;
-  width: 25%;
+  width: 35%;
   text-align: center;
   font-size: 12px;
   color: #fff;
   background-color: #9575CD;
+  border-color: #9575CD;
   padding-top: 3px;
+}
+
+.gifbutton:hover {
+  background-color: #673AB7;
+}
+
+.gifbutton:focus {
+  box-shadow: rgb(190, 175, 218);
+}
+
+.gifbutton:active {
+  background-color: #673AB7;
+  border-color: #673AB7;
 }
 
 @media(min-width: 800px){
@@ -97,12 +133,6 @@ body {
     background-color: #D1C4E9;
     margin:0px auto;
     padding: 20px 0px 20px 0px;
-}
-.jumbotron {
-    padding:70px 30px 70px 30px;
-    margin:0px auto;
-    background: #9575CD ;
-    color:floralwhite;
 }
 
 address{
@@ -163,18 +193,69 @@ address{
   margin-top: 15px;
 }
 
-.login {
+.buttn {
+  appearance: none;
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  background: /*$color-primary*/ #9575CD;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  margin: 0.5rem 0;
+  
+  /*&:hover {
+    opacity: 0.8;
+  }
+  
+  
+  + .buttn {
+    margin-left: 1rem;
+  }*/
+}
+
+.buttn:hover:enabled {
+  background-color: #673AB7 !important;
+}
+
+/*.buttn[disabled]:hover {
+  background-color: red !important;
+}*/
+
+.loginbuttn {
+  appearance: none;
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  background: #512da8;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  margin: 0.5rem 0;
+}
+
+.loginbuttn:hover {
+  background-color: #3F51B5;
+}
+
+.loginform {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #9575CD;
-  height: 675px;
-  color:floralwhite;
+}
+
+/*form {
+  width: 100%;
+  margin-top: 1em;
   padding: 20px;
 }
 
-.sidenav {
-  display: flex;
-  justify-content: flex-start;
+@media(min-width: 800px){
+  form {
+    width: 50%;
+  }
+}*/
+
+.error {
+  color: red;
 }

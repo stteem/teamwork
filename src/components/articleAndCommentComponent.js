@@ -38,7 +38,7 @@ function RenderArticleComments({comments}) {
                 <ul className="list-unstyled">
                         {comments.map((comment) => {
                             return (
-                                <div in key={comment.id}>
+                                <div key={comment.id}>
                                     
                                     <p className="name-date">{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
                                     <li>{comment.comment}</li>
@@ -61,16 +61,16 @@ function RenderSingleComment({comment}) {
     return(
         <div className="col-12 col-md-12 m-1" className="commentBorder">
             <ul className="list-unstyled">
-                    {comment.map((comment) => {
-                        return (
-                            <div in key={comment.id}>
+                {comment.map((comment, index) => {
+                    return (
+                        <div key={index}>
 
-                                <p className="name-date">{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
-                                <li>{comment.comment}</li>
-                                <hr/>
-                            </div>
-                        );
-                    })}
+                            <p className="name-date">{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
+                            <li>{comment.comment}</li>
+                            <hr/>
+                        </div>
+                    );
+                })}
             </ul>
         </div>
     );
@@ -84,12 +84,23 @@ class CommentForm extends Component {
         super(props);
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = {comment: ''}
     }
 
    
 
     handleSubmit(values) {
-        this.props.postArticleComment(this.props.articleid, values.comment);
+        if (values.comment !== '') {
+            this.props.postArticleComment(this.props.articleid, values.comment);
+        }
+        else 
+            this.setState({comment: ''});
+            return false;
+    }
+
+    handleChange(comment) {
+        this.setState({comment: comment})
     }
 
     render() {
@@ -99,11 +110,16 @@ class CommentForm extends Component {
                     
                     <Row className="form-group">
                         <Col>
-                        <Control.textarea model=".comment" id="comment" placeholder="Add a comment"
-                                     className="form-control" />
+                        <Control.textarea 
+                        model=".comment" 
+                        id="comment" 
+                        placeholder="Add a comment"
+                        className="form-control"
+                        onChange={(comment) => this.handleChange(comment)}
+                        />
                         </Col>
                     </Row>
-                    <Button type="submit" className="bg-primary">
+                    <Button type="submit" disabled={!this.state.comment} className="buttn">
                         Post
                     </Button>
                 </LocalForm>
@@ -123,8 +139,8 @@ class ArticleDetail extends Component {
 
         if (this.props.isLoading) {
             return(
-                <div className="container">
-                    <div className="row spinner">
+                <div className="container spinner">
+                    <div className="row">
                         <Loading />
                     </div>
                 </div>
@@ -149,7 +165,7 @@ class ArticleDetail extends Component {
                     </div>
                     <div className="container">
                         <div className="row centreItem">
-                            <div className="col-12 col-md-10 m-1">
+                            <div className="col-12 col-md-8 m-1">
                                 <RenderArticle article={this.props.article.article} />
                                 <RenderArticleComments comments={this.props.article.article.comments} />
                                 <RenderSingleComment comment={this.props.article.comment} />

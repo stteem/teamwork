@@ -1,7 +1,22 @@
 
-<RenderComments comments={props.comments}
-    postComment={props.postComment}
-    itemId={props.item._id} />
+import { actions } from 'react-redux-form';
+import validator from 'validator';
+
+// wherever dispatch() is available:
+dispatch(actions.setErrors('user.email', {
+  invalid: (val) => !validator.isEmail(val) && 'Not a valid email',
+  length: (val) => val < 8 && 'Email is too short'
+}));
+
+
+import { actions } from 'react-redux-form';
+import validator from 'validator';
+
+// wherever validation is occurring:
+dispatch(actions.validate('user.email', {
+  required: (value) => value && value.length,
+  valid: validator.isEmail
+});
 
 
 
@@ -153,3 +168,218 @@ of choice is untrammelled and when nothing prevents our being able to do what we
   frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these
    matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains 
    to avoid worse pains."
+
+
+   <p>
+  <label>
+    Firstname
+    <br />
+    <input type="text" name="firstname" onChange={this.handleChange} value={this.state.product.name}/>
+  </label>
+</p>
+<p>
+  <label>
+    Lastname
+    <br />
+    <input type="text" name="lastname" onChange={this.handleChange} value={this.state.product.category} />
+  </label>
+</p>
+<p>
+  <label>
+    Email
+    <br />
+    <input type="email" name="email" onChange={this.handleChange} value={this.state.product.price} />
+  </label>
+</p>
+<p>
+  <label>
+    Password
+    <br />
+    <input type="password" name="password" onChange={this.handleChange} value={this.state.product.price} />
+  </label>
+</p>
+<p>
+  <label>
+    <input type="radio" value="male" />
+    Male
+  </label>
+  <label>
+    <input type="radio" value="female" />
+    Female
+  </label>
+</p>
+<p>
+  <label>
+    Job Role
+    <br />
+    <input type="text" name="jobrole" onChange={this.handleChange} value={this.state.product.price} />
+  </label>
+</p>
+<p>
+  <label>
+    Department
+    <br />
+    <input type="text" name="dept" onChange={this.handleChange} value={this.state.product.price} />
+  </label>
+</p>
+<p>
+  <label>
+    Address
+    <br />
+    <input type="text" name="address" onChange={this.handleChange} value={this.state.product.price} />
+  </label>
+</p>
+<p>
+  <label>
+    Marital Status
+    <br />
+    <select>
+        <option></option>
+        <option value="married">Married</option>
+        <option value="single">Single</option>
+    </select>
+  </label>
+</p>
+<p>
+  <label>
+    <input type="checkbox" name="isadmin" onChange={this.handleChange} checked={this.state.product.stocked}/>
+    &nbsp;Make admin?
+  </label>
+</p>
+<input type="submit" value="Save" onClick={this.handleSave} />
+
+
+
+
+
+
+
+
+import React, { Component } from 'react';
+import { Breadcrumb, BreadcrumbItem, Button, Label, Col, Row } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
+
+const RESET_VALUES = {firstname: '', lastname: '', email: '', password: '', gender: '',
+ jobrole: '', dept: '', address: '', maritalstatus: '', isadmin: false};
+
+
+class CreateUser extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = {
+          userinfo: Object.assign({}, RESET_VALUES),
+          errors: {}
+        };
+    }
+
+
+    handleChange(e) {
+        const target = e.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name ? target.name : target.id;
+
+        this.setState((prevState) => {
+          prevState.userinfo[name] = value;
+          console.log('setting state', prevState.userinfo)
+          return { userinfo: prevState.userinfo };
+        });
+    }
+
+
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.createUser(this.state.userinfo);
+        // reset the form values to blank after submitting: 
+        this.setState({
+          userinfo: Object.assign({}, RESET_VALUES),
+          errors: {}
+        });
+    }
+
+
+    render() {
+
+        //const { firstname, lastname, email, password, gender, jobrole, dept, address, status } = this.props.createuser;
+        return(
+            <div className="container">
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to='/home'>Home</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>Create User</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>User Information</h3>
+                        <hr />
+                    </div>
+                </div>
+                
+                <div className="row">
+
+                    <form >
+                        <div className="form-group">
+                         <label for="firstname">Firstname</label>
+                          <input type="text" name="firstname" className="form-control form-control-lg"  onChange={this.handleChange} value={this.state.userinfo.firstname}/>
+                        </div>
+                        <div className="form-group">
+                          <label for="lastname">Lastname</label>
+                            <input type="text" name="lastname" className="form-control form-control-lg"  onChange={this.handleChange} value={this.state.userinfo.lastname} />
+                        </div>
+                        <div className="form-group">
+                          <label for="email">Email</label>
+                            <input type="email" name="email" className="form-control form-control-lg"  onChange={this.handleChange} value={this.state.userinfo.email} />
+                        </div>
+                        <div className="form-group">
+                          <label for="password">Password</label>
+                            <input type="password" name="password" className="form-control form-control-lg"  onChange={this.handleChange} value={this.state.userinfo.password} />
+                        </div>
+                        <div className="form-group">
+                          <label for="gender">Gender</label>
+                            <select id="gender" className="form-control form-control-lg" >
+                                <option></option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div className="form-group">
+                          <label for="jobrole">Job Role</label>
+                            <input type="text" name="jobrole" className="form-control form-control-lg"  onChange={this.handleChange} value={this.state.userinfo.jobrole} />
+                        </div>
+                        <div className="form-group">
+                          <label for="dept">Department</label>
+                            <input type="text" name="dept" className="form-control form-control-lg"  onChange={this.handleChange} value={this.state.userinfo.dept} />
+                        </div>
+                        <div className="form-group">
+                          <label for="address">address</label>
+                            <input type="address" name="address" className="form-control form-control-lg"  onChange={this.handleChange} value={this.state.userinfo.address} />
+                        </div>
+                        <div className="form-group">
+                          <label for="maritalStatus">Marital Status</label>
+                            <select id="maritalstatus" className="form-control form-control-lg" >
+                                <option></option>
+                                <option value="single">Single</option>
+                                <option value="married">Married</option>
+                            </select>
+                        </div>
+                        <div className="form-group form-check">
+                            <input type="checkbox" className="form-check-input" name="isadmin" onChange={this.handleChange} checked={this.state.userinfo.isadmin}/>
+                            &nbsp;
+                            <label for="isadmin"><strong>Make admin?</strong></label>
+                        </div>
+                        <Button className="buttn" type="submit" color="primary" >
+                          Register
+                        </Button>
+                        
+                    </form>
+                </div>
+            </div>
+        );
+    }
+
+}
+
+export default CreateUser;

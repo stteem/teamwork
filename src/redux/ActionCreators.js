@@ -47,7 +47,7 @@ export const loginUser = (creds) => (dispatch) => {
         } else {
             var error = new Error('Error ' + response.status + ': ' + response.statusText);
             console.log('error', error)
-            error.response = response;
+            //error.response = response;
             throw error;
         }
     },
@@ -741,3 +741,59 @@ export const deletePostedArticle = (itemid) => (dispatch) => {
     .then(response => { console.log('Posted Article Deleted', response); dispatch(deletePostedArticleSuccess(itemid)); })
     .catch(error => dispatch(deletePostedArticleFailed(error.message)));
 };
+
+
+
+
+// Create new user
+
+export const createUserIsLoading = () => {
+    return {
+        type: ActionTypes.CREATE_USER_LOADING
+    }
+}
+
+export const addCreateUser = (message) => ({
+    type: ActionTypes.CREATE_USER,
+    payload: message
+});
+
+export const createUserFailed = (errmess) => ({
+    type: ActionTypes.CREATE_USER_FAILED,
+    payload: errmess
+});
+
+
+export const postNewUser = (values ) => (dispatch) => {
+
+    dispatch(createUserIsLoading());
+
+    console.log('User info', JSON.stringify(values))
+
+    const bearer = 'Bearer ' + localStorage.getItem('token'); 
+    return fetch(baseUrl + 'api/v1/auth/create-user', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': bearer
+        },
+        body: JSON.stringify(values)
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('response', response)
+            return response;
+        } else {
+            var error = new Error('Error ' + response.status + ': ' + response.statusText);
+            console.log('error', error)
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        throw error;
+    })
+    .then(response => response.json())
+    .then(response => { console.log(response.data); dispatch(addCreateUser(response.data))})
+    .catch(error => dispatch(createUserFailed(error.message)));
+}

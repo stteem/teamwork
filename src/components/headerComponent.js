@@ -58,9 +58,11 @@ class Header extends Component {
                                 <NavLink className="nav-link"  to='/home'><span className="fa fa-home fa-lg"></span> Home</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink className="nav-link" to='/aboutus'><span className="fa fa-info fa-lg"></span> About</NavLink>
+                                <NavLink className="nav-link" to='/about'><span className="fa fa-info fa-lg"></span> About</NavLink>
                             </NavItem>
-                            
+                            <NavItem>
+                                <NavLink className="nav-link" to='/createuser'><span className="fa fa-user-plus fa-lg"></span> Create User</NavLink>
+                            </NavItem>
                             </Nav>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
