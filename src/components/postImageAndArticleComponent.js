@@ -53,13 +53,16 @@ class RenderPostForm extends Component {
 
     handleImageSubmit(event) {
         event.preventDefault();
-        this.toggleModal();
-        this.props.postGif(this.title.value, this.state.file);
+        if (this.title.value !== '' && this.state.file !== null) {
+            this.toggleModal();
+            this.props.postGif(this.title.value, this.state.file);
+        }
+        else return false;
     }
 
     handleArticleSubmit(event) {
         event.preventDefault();
-        if (this.title.value !== '' || this.article.value !== '') {
+        if (this.title.value !== '' && this.article.value !== '') {
             this.toggleArticleModal();
             this.props.postArticle(this.title.value, this.article.value);
         }

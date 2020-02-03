@@ -159,12 +159,6 @@ export const fetchFeed = () => (dispatch) => {
 
 //Post Gif
 
-/*export const postGifloading = () => {
-    return {
-        type: ActionTypes.POST_GIF_LOADING
-    }
-}*/
-
 export const postGifFailed = (errmess) => {
     return {
         type: ActionTypes.POST_GIF_FAILED,
@@ -398,8 +392,8 @@ export const addArticleFailed = (errmess) => ({
 export const postArticle = (title, text ) => (dispatch) => {
 
     const article = {
-        title: title,
-        text: text
+        newtitle: title,
+        newtext: text
     }
 
     console.log('Comment', article)
@@ -507,8 +501,8 @@ export const addArticleCommentFailed = (errmess) => ({
 export const postArticleComment = (articleid, comment ) => (dispatch) => {
 
     const newComment = {
-        articleid: articleid,
-        comment: comment
+        newarticleid: articleid,
+        newcomment: comment
     }
 
     console.log('Comment', newComment)
@@ -561,9 +555,9 @@ export const updateArticleSuccess = (itemid) => ({
 export const updateArticle = (itemid, title, article ) => (dispatch) => {
 
     const articleUpdate = {
-        itemid: itemid,
-        title: title,
-        article: article
+        newitemid: itemid,
+        newtitle: title,
+        newarticle: article
     }
 
     console.log('Updated article', articleUpdate)
@@ -616,9 +610,9 @@ export const updatePostedArticleSuccess = (itemid) => ({
 export const updatePostedArticle = (itemid, title, article ) => (dispatch) => {
 
     const articleUpdate = {
-        itemid: itemid,
-        title: title,
-        article: article
+        newitemid: itemid,
+        newtitle: title,
+        newarticle: article
     }
 
     console.log('Updated article', articleUpdate)

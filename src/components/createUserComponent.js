@@ -24,11 +24,11 @@ class CreateUser extends Component {
     handleSubmit(reguser) {
         
         //console.log('reguser', reguser.values)
-        if (reguser.firstname !== '' || reguser.lastname !== ''
-        	|| reguser.email !== '' || reguser.password !== ''
-        	|| reguser.gender !== false || reguser.jobrole !== ''
-        	|| reguser.department !== '' || reguser.address !== ''
-        	|| reguser.maritalstatus !== false ) 
+        if (reguser.firstname !== '' && reguser.lastname !== ''
+        	&& reguser.email !== '' && reguser.password !== ''
+        	&& reguser.gender !== false && reguser.jobrole !== ''
+        	&& reguser.department !== '' && reguser.address !== ''
+        	&& reguser.maritalstatus !== false ) 
         {
         	//console.log("Current State is: " + JSON.stringify(reguser.firstname));
         	this.props.postNewUser(reguser);
