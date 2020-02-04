@@ -1,8 +1,6 @@
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 
 export default function Login(props) {

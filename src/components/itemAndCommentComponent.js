@@ -54,7 +54,7 @@ function RenderItemComments({comments}) {
 
 function RenderSingleComment({comment}) {
     return(
-        <div className="col-12 col-md-12 m-1" className="commentBorder">
+        <div className="col-12 col-md-12 m-1 commentBorder">
             <ul className="list-unstyled">
                 {comment.map((comment, index) => {
                     return (

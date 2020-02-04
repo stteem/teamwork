@@ -88,7 +88,7 @@ export default function UpdateArticleMenuOptions(props) {
       >
         <Fade in={open}>
           <div className={classes.paper}>
-          <div className="closemodal" onClick={handleClose}><a href="#">X</a></div>
+          <div className="closemodal" onClick={handleClose}><Button color="link">X</Button></div>
             <h2 id="transition-modal-title">Edit Article</h2>
             <Form onSubmit={handleArticleSubmit}>
                 <FormGroup>
