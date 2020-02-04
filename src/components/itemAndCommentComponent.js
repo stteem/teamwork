@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody,
-    CardTitle, CardSubtitle, Breadcrumb, BreadcrumbItem, Label,
-     Button, Row, Col } from 'reactstrap';
+import { Card, CardImg,  CardBody, CardTitle, CardSubtitle, Breadcrumb, BreadcrumbItem, Button, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import { Loading } from './loadingComponent';
-import { baseUrl } from '../shared/baseUrl';
-import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 
 
@@ -33,7 +29,7 @@ function RenderItem({item}) {
 function RenderItemComments({comments}) {
     if (comments != null) {
         return(
-            <div className="col-12 col-md-12 m-1" className="commentBorder">
+            <div className="col-12 col-md-12 m-1 commentBorder">
                 <ul className="list-unstyled">
                         {comments.map((comment, index) => {
                             return (
@@ -132,10 +128,6 @@ class CommentForm extends Component {
 
 
 class ItemDetail extends Component {
-
-    constructor(props) {
-        super(props);
-    }
 
 
     render() { 

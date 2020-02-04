@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardImg, CardTitle, CardBody, CardSubtitle, CardText, Form, FormGroup } from 'reactstrap';
+import { Card, CardImg, CardTitle, CardBody, CardSubtitle, CardText } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './loadingComponent';
 import DeleteDialog from './deleteDialogComponent';
@@ -130,10 +130,6 @@ function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndCom
 
 
 class Feed extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     render() {
 

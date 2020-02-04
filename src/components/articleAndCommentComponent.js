@@ -34,7 +34,7 @@ function RenderArticle({article}) {
 function RenderArticleComments({comments}) {
     if (comments != null) {
         return(
-            <div className="col-12 col-md-12 m-1" className="commentBorder">
+            <div className="col-12 col-md-12 m-1 commentBorder" >
                 <ul className="list-unstyled">
                         {comments.map((comment) => {
                             return (
@@ -59,7 +59,7 @@ function RenderArticleComments({comments}) {
 
 function RenderSingleComment({comment}) {
     return(
-        <div className="col-12 col-md-12 m-1" className="commentBorder">
+        <div className="col-12 col-md-12 m-1 commentBorder">
             <ul className="list-unstyled">
                 {comment.map((comment, index) => {
                     return (
