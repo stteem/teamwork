@@ -13,7 +13,7 @@ import { actions } from 'react-redux-form';
 
 import { loginUser, logoutUser, fetchFeed, postGif, fetchImageAndComments, postImageComment,
          postArticle, fetchArticleAndComments, postArticleComment, updateArticle, updatePostedArticle, 
-         deleteImage, deleteArticle, deletePostedArticle, postNewUser } from '../redux/ActionCreators';
+         deleteImage, deleteArticle, deletePostedArticle, deletePostedImage, postNewUser } from '../redux/ActionCreators';
 import { Switch, Route, Redirect, matchPath, withRouter } from 'react-router-dom';
 
 
@@ -43,6 +43,7 @@ const mapDispatchToProps = (dispatch) => ({
   deleteImage: (itemid) => dispatch(deleteImage(itemid)),
   deleteArticle: (itemid) => dispatch(deleteArticle(itemid)),
   deletePostedArticle: (itemid) => dispatch(deletePostedArticle(itemid)),
+  deletePostedImage: (itemid) => dispatch(deletePostedImage(itemid)),
   postNewUser: (values) => dispatch(postNewUser(values)),
   resetCreateUserForm: () => { dispatch(actions.reset('reguser'))}
  });
@@ -174,7 +175,8 @@ class Main extends Component {
                                                   fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
                                                   updateArticle={this.props.updateArticle} deleteImage={this.props.deleteImage} 
                                                   deleteArticle={this.props.deleteArticle} postGif={this.props.postGif} postArticle={this.props.postArticle}
-                                                  updatePostedArticle={this.props.updatePostedArticle} deletePostedArticle={this.props.deletePostedArticle} />} />
+                                                  updatePostedArticle={this.props.updatePostedArticle} deletePostedArticle={this.props.deletePostedArticle} 
+                                                  deletePostedImage={this.props.deletePostedImage} />} />
             <PrivateRoute path="/item/:itemid" component={ItemWithId} />
             <PrivateRoute path="/article/:itemid" component={ArticleWithId} />
             <PrivateRoute path="/createuser" component={() => <CreateUser resetCreateUserForm={this.props.resetCreateUserForm} postNewUser={this.props.postNewUser} />} />

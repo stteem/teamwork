@@ -65,6 +65,14 @@ export const Feed = (state = {
 
 
 
+        // Delete and remove posted image from feed
+        case ActionTypes.DELETE_POSTED_IMAGE:
+            return {...state, feed: state.feed.filter(feed => feed.itemid !== action.payload) };
+
+        case ActionTypes.DELETE_POSTED_IMAGE_FAILED:
+            return {...state, isLoading: false, errMess: action.payload, feeds: [], feed: []};
+
+
 
 
 

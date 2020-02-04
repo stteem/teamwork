@@ -263,6 +263,51 @@ export const deleteImage = (itemid) => (dispatch) => {
 
 
 
+//Delete Posted Image
+
+export const deletePostedImageFailed = (errmess) => ({
+    type: ActionTypes.DELETE_POSTED_IMAGE_FAILED,
+    payload: errmess
+});
+
+export const deletePostedImageSuccess = (itemid) => ({
+    type: ActionTypes.DELETE_POSTED_IMAGE,
+    payload: itemid
+});
+
+
+
+export const deletePostedImage = (itemid) => (dispatch) => {
+
+    const bearer = 'Bearer ' + localStorage.getItem('token');
+
+    return fetch(baseUrl + 'api/v1/gifs/' + itemid, {
+        method: "DELETE",
+        headers: {
+          'Authorization': bearer
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+    .then(response => response.json())
+    .then(image => { console.log('Image Deleted', image); dispatch(deletePostedImageSuccess(itemid)); })
+    .catch(error => dispatch(deletePostedImageFailed(error.message)));
+};
+
+
+
+
+
 
 
 //FETCH IMAGE AND COMMENTS BY ID

@@ -36,9 +36,9 @@ function RenderArticleComments({comments}) {
         return(
             <div className="col-12 col-md-12 m-1 commentBorder" >
                 <ul className="list-unstyled">
-                        {comments.map((comment) => {
+                        {comments.map((comment, index) => {
                             return (
-                                <div key={comment.id}>
+                                <div key={index}>
                                     
                                     <p className="name-date">{comment.firstname} {comment.lastname} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(comment.createdon)))}</p>
                                     <li>{comment.comment}</li>

@@ -2,7 +2,8 @@ import React from 'react';
 import { Card, CardImg, CardTitle, CardBody, CardSubtitle, CardText } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Loading } from './loadingComponent';
-import DeleteDialog from './deleteDialogComponent';
+import DeleteDialog from './deleteImageDialogComponent';
+import DeletePostedImageDialog from './deletePostedImageDialogComponent';
 import ArticleMenuOptions from './alterArticleComponent';
 import PostedArticleMenuOptions from './alterPostedArticleComponent';
 import RenderPostForm from './postImageAndArticleComponent';
@@ -66,12 +67,12 @@ function RenderFeedItem({auth, feed, fetchImageAndComments, fetchArticleAndComme
 }
 
 
-function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updatePostedArticle, deleteImage, deletePostedArticle}) {
+function RenderPostedItem({auth, feed, fetchImageAndComments, fetchArticleAndComments, updatePostedArticle, deletePostedArticle, deletePostedImage}) {
     if (feed.imageurl != null) {
         return(
             <Card>
             {parseInt(auth.userid, [10]) === feed.userid ?
-                <div className="longmenu"><DeleteDialog itemid={feed.itemid} deleteImage={deleteImage} /></div>
+                <div className="longmenu"><DeletePostedImageDialog itemid={feed.itemid} deletePostedImage={deletePostedImage} /></div>
                 : null
             }
                 <CardBody>
@@ -158,7 +159,7 @@ class Feed extends React.Component {
                                 <RenderPostedItem feed={feed} fetchImageAndComments={this.props.fetchImageAndComments}
                                     fetchArticleAndComments={this.props.fetchArticleAndComments} auth={this.props.auth}
                                     updatePostedArticle={this.props.updatePostedArticle} deleteImage={this.props.deleteImage} 
-                                    deletePostedArticle={this.props.deletePostedArticle} />
+                                    deletePostedArticle={this.props.deletePostedArticle} deletePostedImage={this.props.deletePostedImage} />
                             </div>
                         </div>
                     </li>
