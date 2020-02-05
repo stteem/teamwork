@@ -179,7 +179,8 @@ class Main extends Component {
                                                   deletePostedImage={this.props.deletePostedImage} />} />
             <PrivateRoute path="/item/:itemid" component={ItemWithId} />
             <PrivateRoute path="/article/:itemid" component={ArticleWithId} />
-            <PrivateRoute path="/createuser" component={() => <CreateUser resetCreateUserForm={this.props.resetCreateUserForm} postNewUser={this.props.postNewUser} />} />
+            <PrivateRoute path="/createuser" component={() => <CreateUser resetCreateUserForm={this.props.resetCreateUserForm} 
+                                                        postNewUser={this.props.postNewUser} isadmin={this.props.auth.isadmin} />} />
             <Route path="/about" component={() =>  <About /> } />
             <Redirect to="/home" />
         </Switch>

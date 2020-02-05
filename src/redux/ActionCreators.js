@@ -15,7 +15,8 @@ export const receiveLogin = (response) => {
         type: ActionTypes.LOGIN_SUCCESS,
         token: response.token,
         user: response.firstname,
-        userid: response.userid
+        userid: response.userid,
+        isadmin: response.isadmin
     }
 }
   
@@ -62,6 +63,7 @@ export const loginUser = (creds) => (dispatch) => {
             const storage = localStorage.setItem('token', response.token);
             localStorage.setItem('user', response.firstname);
             localStorage.setItem('userid', response.userid);
+            localStorage.setItem('isadmin', response.isadmin);
             console.log('storage', storage)
             // Dispatch the success action
             dispatch(receiveLogin(response));

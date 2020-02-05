@@ -274,7 +274,7 @@ class CreateUser extends Component {
                             <Row className="form-group">
                                 <Col md={{size:10, offset: 2}}>
                                 <p className="error">{this.state.error}</p>
-                                    <Button className="buttn" disabled type="submit">
+                                    <Button className="buttn" disabled={!this.props.isadmin} type="submit">
                                     Create User
                                     </Button>
                                 </Col>
