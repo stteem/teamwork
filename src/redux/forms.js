@@ -1,4 +1,12 @@
-export const InitialCreds = {
+export const InitialUser = {
+    firstname: '',
+    lastname: '',
     email: '',
-    password: ''
+    password: '',
+    gender: false,
+    jobrole: '',
+    department: '',
+    address: '',
+    maritalstatus: false,
+    isadmin: false
 }

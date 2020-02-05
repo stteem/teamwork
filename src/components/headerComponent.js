@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron, Button, Modal, ModalHeader, ModalBody,
+import { Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Button, Modal, ModalHeader, ModalBody,
     Form, FormGroup, Input, Label } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+
 
 class Header extends Component {
     constructor(props) {
@@ -15,7 +18,7 @@ class Header extends Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
-      }
+    }
 
     toggleNav() {
         this.setState({
@@ -55,46 +58,34 @@ class Header extends Component {
                                 <NavLink className="nav-link"  to='/home'><span className="fa fa-home fa-lg"></span> Home</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink className="nav-link" to='/aboutus'><span className="fa fa-info fa-lg"></span> About Us</NavLink>
+                                <NavLink className="nav-link" to='/about'><span className="fa fa-info fa-lg"></span> About</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink className="nav-link" to='/createuser'><span className="fa fa-user-plus fa-lg"></span> Create User</NavLink>
                             </NavItem>
                             </Nav>
                             <Nav className="ml-auto" navbar>
                                 <NavItem>
-                                    { !this.props.auth.isAuthenticated ?
-                                        <Button outline onClick={this.toggleModal}>
-                                            <span className="fa fa-sign-in fa-lg"></span> Login
-                                            {this.props.auth.isFetching ?
-                                                <span className="fa fa-spinner fa-pulse fa-fw"></span>
-                                                : null
-                                            }
-                                        </Button>
-                                        :
+                                    { this.props.auth.isAuthenticated ?
                                         <div>
-                                        <div className="navbar-text mr-3">{this.props.auth.user.username}</div>
-                                        <Button outline onClick={this.handleLogout}>
-                                            <span className="fa fa-sign-out fa-lg"></span> Logout
-                                            {this.props.auth.isFetching ?
-                                                <span className="fa fa-spinner fa-pulse fa-fw"></span>
-                                                : null
-                                            }
-                                        </Button>
+                                            <div className="navbar-text mr-3"><FontAwesomeIcon icon={ faUser } size="lg" /> {this.props.auth.user}</div>
+                                            <Button outline onClick={this.handleLogout}>
+                                                <span className="fa fa-sign-out fa-lg"></span> Logout
+                                                {this.props.auth.isLoading ?
+                                                    <span className="fa fa-spinner fa-pulse fa-fw"></span>
+                                                    : null
+                                                }
+                                            </Button>
                                         </div>
+                                        :
+                                        null
                                     }
                                 </NavItem>
                             </Nav>
                         </Collapse>
                     </div>
                 </Navbar>
-                <Jumbotron>
-                    <div className="container">
-                        <div className="row row-header">
-                            <div className="col-12 col-sm-6">
-                                <h1>TeamWork</h1>
-                                <p>Inspiration comes from the little Gifs of life!</p>
-                            </div>
-                        </div>
-                    </div>
-                </Jumbotron>
+                
                 <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
                     <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
                     <ModalBody>
