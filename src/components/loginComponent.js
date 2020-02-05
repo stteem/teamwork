@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
 import { useHistory, useLocation } from 'react-router-dom';
+import icon96 from '../logo/icon96.png';
 
 
 export default function Login(props) {
@@ -31,8 +32,8 @@ export default function Login(props) {
     return(
         <div> 
         	<header className="App-header">
-                <h1>TeamWork</h1>
-                <h5>Inspiration comes from the little Gifs of life! Login to connect with your team mates in a giffy way.</h5> 
+                <img src={icon96} alt="Logo" />
+                <h2>TeamWork</h2>
                 <div className="container">
                     <div className="row loginform">
                         <div className="col-12 col-md-3" >
